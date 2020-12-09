@@ -9,13 +9,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
+import com.codingwithmitch.food2forkcompose.interactors.SearchRecipe
 import com.codingwithmitch.food2forkcompose.presentation.components.util.GenericDialogInfo
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
 import com.codingwithmitch.food2forkcompose.repository.RecipeRepository
 import com.codingwithmitch.food2forkcompose.util.TAG
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Named
 
 const val PAGE_SIZE = 30
@@ -29,7 +31,7 @@ const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.query.selected_category"
 class RecipeListViewModel
 @ViewModelInject
 constructor(
-        private val repository: RecipeRepository,
+        private val searchRecipe: SearchRecipe,
         private @Named("auth_token") val token: String,
         @Assisted private val savedStateHandle: SavedStateHandle,
 ): ViewModel(){
@@ -48,6 +50,8 @@ constructor(
      * If GenericDialogInfo == null, do not a show dialog.
      */
     val genericDialogInfo: MutableState<GenericDialogInfo?> = mutableStateOf(null)
+
+    val errorDialogInfo: MutableState<GenericDialogInfo?> = mutableStateOf(null)
 
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
@@ -78,6 +82,7 @@ constructor(
         else{
             onTriggerEvent(NewSearchEvent())
         }
+
     }
 
     fun onTriggerEvent(event: RecipeListEvent){
@@ -100,34 +105,52 @@ constructor(
             }
             finally {
                 Log.d(TAG, "launchJob: finally called.")
-                loading.value = false
             }
         }
     }
 
     private suspend fun restoreState(){
-        loading.value = true
-        // Must retrieve each page of results.
-        val results: ArrayList<Recipe> = ArrayList()
-        for(p in 1..page.value){
-            Log.d(TAG, "restoreState: page: ${p}, query: ${query.value}")
-            val result = repository.search(token = token, page = p, query = query.value )
-            results.addAll(result)
-        }
-        recipes.value = results
+//        loading.value = true
+//        // Must retrieve each page of results.
+//        val results: ArrayList<Recipe> = ArrayList()
+//        for(p in 1..page.value){
+//            Log.d(TAG, "restoreState: page: ${p}, query: ${query.value}")
+//            searchRecipe.execute(token = token, page = p, query = query.value ).onEach { list ->
+//                withContext(Main){
+//                    results.addAll(list)
+//                }
+//            }.launchIn(viewModelScope)
+//        }
+//        recipes.value = results
     }
 
     private suspend fun newSearch(){
-        loading.value = true
-
         // New search. Reset the state
         resetSearchState()
 
-        // just to show pagination, api is fast
-        delay(1000)
+        searchRecipe.execute(token = token, page = page.value, query = query.value ).onEach { dataState ->
+            withContext(Main){
+                loading.value = dataState.loading
 
-        val result = repository.search(token = token, page = page.value, query = query.value )
-        recipes.value = result
+                dataState.data?.let { list ->
+                    recipes.value = list
+                }
+
+                dataState.error?.let { error ->
+                    onChangeErrorDialogInfo(
+                            dialogInfo = GenericDialogInfo(
+                                    onDismiss = {onChangeErrorDialogInfo(null)},
+                                    title = "Error",
+                                    description = error,
+                                    positiveBtnTxt = "Ok",
+                                    onPositiveAction = {onChangeErrorDialogInfo(null)},
+                                    onNegativeAction = {}
+                            )
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
+
     }
 
     private suspend fun nextPage(){
@@ -135,13 +158,16 @@ constructor(
         incrementPage()
         Log.d(TAG, "nextPage: triggered: ${page.value}")
 
-        // just to show pagination, api is fast
-        delay(1000)
-
         if(page.value > 1){
-            val result = repository.search(token = token, page = page.value, query = query.value )
-            Log.d(TAG, "search: appending")
-            appendRecipes(result)
+            searchRecipe.execute(token = token, page = page.value, query = query.value ).onEach { dataState ->
+                withContext(Main){
+                    loading.value = dataState.loading
+
+                    dataState.data?.let { list ->
+                        appendRecipes(list)
+                    }
+                }
+            }.launchIn(viewModelScope)
         }
     }
 
@@ -151,6 +177,10 @@ constructor(
 
     fun onChangeGenericDialogInfo(dialogInfo: GenericDialogInfo?){
         genericDialogInfo.value = dialogInfo
+    }
+
+    fun onChangeErrorDialogInfo(dialogInfo: GenericDialogInfo?){
+        errorDialogInfo.value = dialogInfo
     }
 
     /**

@@ -2,11 +2,11 @@ package com.codingwithmitch.food2forkcompose.repository
 
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.network.RecipeService
-import com.codingwithmitch.food2forkcompose.network.model.RecipeMapper
+import com.codingwithmitch.food2forkcompose.network.model.RecipeNetworkMapper
 
 class RecipeRepository_Impl (
-        private val recipeService: RecipeService,
-        private val mapper: RecipeMapper,
+    private val recipeService: RecipeService,
+    private val mapper: RecipeNetworkMapper,
 ): RecipeRepository {
 
     override suspend fun search(token: String, page: Int, query: String): List<Recipe> {

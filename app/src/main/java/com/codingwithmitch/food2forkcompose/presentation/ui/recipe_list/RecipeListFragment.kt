@@ -5,14 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.ScrollableRow
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumnForIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.ExperimentalFocus
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -33,6 +35,7 @@ import com.codingwithmitch.food2forkcompose.R
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.presentation.BaseApplication
 import com.codingwithmitch.food2forkcompose.presentation.components.*
+import com.codingwithmitch.food2forkcompose.presentation.components.util.GenericDialogInfo
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
 import com.codingwithmitch.food2forkcompose.presentation.theme.Black5
 import com.codingwithmitch.food2forkcompose.presentation.theme.Grey1
@@ -85,8 +88,9 @@ class RecipeListFragment: Fragment() {
 
                 val genericDialogInfo = viewModel.genericDialogInfo.value
 
-                val snackbarActionLabel = stringResource(id = R.string.dismiss)
+                val errorDialogInfo = viewModel.errorDialogInfo.value
 
+                val snackbarActionLabel = stringResource(id = R.string.dismiss)
 
                 AppTheme(
                         darkTheme = !application.isLight,
@@ -139,35 +143,39 @@ class RecipeListFragment: Fragment() {
                                 modifier = Modifier
                                         .background(color = if(application.isLight) Grey1 else Black5)
                         ) {
-                            Box(modifier = Modifier.fillMaxSize()) {
+                            Box(
+                                    modifier = Modifier.fillMaxSize()
+                            ) {
                                 if (displayProgressBar && recipes.isEmpty()){
                                     Column {
                                         HorizontalDottedProgressBar()
                                         LoadingRecipeListShimmer(200)
                                     }
                                 }
-                                else RecipeList(
-                                        recipes = recipes,
-                                        page = page,
-                                        onNextPage = {
-                                            viewModel.onTriggerEvent(NextPageEvent())
-                                        },
-                                        isLoading = displayProgressBar,
-                                        onSelectRecipe = {
-                                            val bundle = Bundle()
-                                            bundle.putInt("recipeId", it)
-                                            findNavController().navigate(R.id.viewRecipe, bundle)
-                                        },
-                                        onError = {
-                                            snackbarController.handleSnackbarError(
-                                                    scaffoldState = scaffoldState,
-                                                    message = it,
-                                                    actionLabel = snackbarActionLabel
-                                            )
-                                        },
-                                        onChangeScrollPosition = viewModel::onChangeRecipeScrollPosition,
-                                        firstVisibleIndex = viewModel.recipeListScrollPosition,
-                                )
+                                else {
+                                    RecipeList(
+                                            recipes = recipes,
+                                            page = page,
+                                            onNextPage = {
+                                                viewModel.onTriggerEvent(NextPageEvent())
+                                            },
+                                            isLoading = displayProgressBar,
+                                            onSelectRecipe = {
+                                                val bundle = Bundle()
+                                                bundle.putInt("recipeId", it)
+                                                findNavController().navigate(R.id.viewRecipe, bundle)
+                                            },
+                                            onError = {
+                                                snackbarController.handleSnackbarError(
+                                                        scaffoldState = scaffoldState,
+                                                        message = it,
+                                                        actionLabel = snackbarActionLabel
+                                                )
+                                            },
+                                            onChangeScrollPosition = viewModel::onChangeRecipeScrollPosition,
+                                            firstVisibleIndex = viewModel.recipeListScrollPosition,
+                                    )
+                                }
                                 ErrorSnackbar(
                                         snackbarHostState = scaffoldState.snackbarHostState,
                                         onDismiss = { scaffoldState.snackbarHostState.currentSnackbarData?.dismiss() },
@@ -180,7 +188,19 @@ class RecipeListFragment: Fragment() {
                                             description = dialogInfo.description,
                                             positiveBtnTxt = dialogInfo.positiveBtnTxt,
                                             onPositiveAction = dialogInfo.onPositiveAction,
-                                            negatveBtnTxt = dialogInfo.negatveBtnTxt,
+                                            negativeBtnTxt = dialogInfo.negatveBtnTxt,
+                                            onNegativeAction = dialogInfo.onNegativeAction,
+                                    )
+                                }
+                                errorDialogInfo?.let { dialogInfo ->
+                                    Log.d(TAG, "onCreateView: ERROR: ${dialogInfo.description}")
+                                    GenericDialog(
+                                            onDismiss = dialogInfo.onDismiss,
+                                            title = dialogInfo.title,
+                                            description = dialogInfo.description,
+                                            positiveBtnTxt = dialogInfo.positiveBtnTxt,
+                                            onPositiveAction = dialogInfo.onPositiveAction,
+                                            negativeBtnTxt = dialogInfo.negatveBtnTxt,
                                             onNegativeAction = dialogInfo.onNegativeAction,
                                     )
                                 }

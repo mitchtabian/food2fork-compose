@@ -12,12 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageAsset
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.util.DEFAULT_RECIPE_IMAGE
 import com.codingwithmitch.food2forkcompose.util.loadPicture
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.math.roundToInt
 
 @ExperimentalCoroutinesApi
 @Composable

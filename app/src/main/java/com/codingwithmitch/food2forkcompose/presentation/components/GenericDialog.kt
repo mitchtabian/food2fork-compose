@@ -16,12 +16,12 @@ fun GenericDialog(
         description: String? = null,
         positiveBtnTxt: String? = null,
         onPositiveAction: () -> Unit,
-        negatveBtnTxt: String? = null,
+        negativeBtnTxt: String? = null,
         onNegativeAction: () -> Unit,
         modifier: Modifier? = null,
 
         ){
-    if(positiveBtnTxt == null && negatveBtnTxt == null){
+    if(positiveBtnTxt == null && negativeBtnTxt == null){
         throw Exception("There must be at least one button on a dialog.")
     }
     AlertDialog(
@@ -50,21 +50,20 @@ fun GenericDialog(
                 ){
                     if(positiveBtnTxt != null){
                         Button(
-                                modifier = if(negatveBtnTxt != null) Modifier.padding(end=8.dp) else Modifier,
+                                modifier = if(negativeBtnTxt != null) Modifier.padding(end=8.dp) else Modifier,
                                 onClick = onPositiveAction,
                         ) {
                             Text(text = positiveBtnTxt)
                         }
                     }
-                    if(negatveBtnTxt != null){
+                    if(negativeBtnTxt != null){
                         Button(
                                 onClick = onNegativeAction
                         ) {
-                            Text(text = negatveBtnTxt)
+                            Text(text = negativeBtnTxt)
                         }
                     }
                 }
-
             }
     )
 }

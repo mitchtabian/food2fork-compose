@@ -94,4 +94,21 @@ dependencies {
     def leak_canary = "2.5"
     implementation "com.squareup.leakcanary:leakcanary-android:$leak_canary"
 
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    // Coroutines for room
+    implementation "androidx.room:room-ktx:$room_version"
 }
+
+
+
+
+
+
+
+
+
+
+
+
