@@ -1,7 +1,7 @@
 package com.codingwithmitch.food2forkcompose.di
 
 import com.codingwithmitch.food2forkcompose.network.RecipeService
-import com.codingwithmitch.food2forkcompose.network.model.RecipeNetworkMapper
+import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -18,8 +18,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNetworkRecipeMapper(): RecipeNetworkMapper {
-        return RecipeNetworkMapper()
+    fun provideNetworkRecipeMapper(): RecipeDtoMapper {
+        return RecipeDtoMapper()
     }
 
     @Singleton

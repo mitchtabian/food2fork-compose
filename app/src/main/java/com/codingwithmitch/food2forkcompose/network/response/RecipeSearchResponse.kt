@@ -1,6 +1,6 @@
 package com.codingwithmitch.food2forkcompose.network.response
 
-import com.codingwithmitch.food2forkcompose.network.model.RecipeNetworkEntity
+import com.codingwithmitch.food2forkcompose.network.model.RecipeDto
 import com.google.gson.annotations.SerializedName
 
 class RecipeSearchResponse(
@@ -9,7 +9,7 @@ class RecipeSearchResponse(
     var count: Int,
 
     @SerializedName("results")
-    var recipes: List<RecipeNetworkEntity>,
+    var recipes: List<RecipeDto>,
 )
 
 

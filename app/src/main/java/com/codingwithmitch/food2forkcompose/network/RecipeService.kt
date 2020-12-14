@@ -1,6 +1,6 @@
 package com.codingwithmitch.food2forkcompose.network
 
-import com.codingwithmitch.food2forkcompose.network.model.RecipeNetworkEntity
+import com.codingwithmitch.food2forkcompose.network.model.RecipeDto
 import com.codingwithmitch.food2forkcompose.network.response.RecipeSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -20,5 +20,5 @@ interface RecipeService {
     suspend fun get(
             @Header("Authorization") token: String,
             @Query("id") id: Int
-    ): RecipeNetworkEntity
+    ): RecipeDto
 }

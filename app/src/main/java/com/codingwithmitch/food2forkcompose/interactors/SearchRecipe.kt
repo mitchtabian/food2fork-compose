@@ -6,7 +6,7 @@ import com.codingwithmitch.food2forkcompose.cache.model.RecipeCacheMapper
 import com.codingwithmitch.food2forkcompose.domain.data.DataState
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.network.RecipeService
-import com.codingwithmitch.food2forkcompose.network.model.RecipeNetworkMapper
+import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import com.codingwithmitch.food2forkcompose.util.RECIPE_PAGINATION_PAGE_SIZE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ class SearchRecipe(
     private val recipeDao: RecipeDao,
     private val recipeService: RecipeService,
     private val cacheMapper: RecipeCacheMapper,
-    private val networkMapper: RecipeNetworkMapper,
+    private val dtoMapper: RecipeDtoMapper,
 ) {
 
     suspend fun execute(
@@ -42,7 +42,7 @@ class SearchRecipe(
             )
 
             // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
-            val recipes = networkMapper.fromEntityList(
+            val recipes = dtoMapper.fromEntityList(
                     networkResult.recipes
             )
             val entities = cacheMapper.toEntityList(recipes)
