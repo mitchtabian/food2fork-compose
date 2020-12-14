@@ -2,7 +2,7 @@ package com.codingwithmitch.food2forkcompose.interactors
 
 import com.codingwithmitch.food2forkcompose.cache.RecipeDao
 import com.codingwithmitch.food2forkcompose.cache.exceptions.RecipeCacheException
-import com.codingwithmitch.food2forkcompose.cache.model.RecipeCacheMapper
+import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
 import com.codingwithmitch.food2forkcompose.domain.data.DataState
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.network.RecipeService
@@ -16,7 +16,7 @@ import java.lang.Exception
 class SearchRecipe(
     private val recipeDao: RecipeDao,
     private val recipeService: RecipeService,
-    private val cacheMapper: RecipeCacheMapper,
+    private val entityMapper: RecipeEntityMapper,
     private val dtoMapper: RecipeDtoMapper,
 ) {
 
@@ -42,10 +42,10 @@ class SearchRecipe(
             )
 
             // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
-            val recipes = dtoMapper.fromEntityList(
+            val recipes = dtoMapper.toDomainList(
                     networkResult.recipes
             )
-            val entities = cacheMapper.toEntityList(recipes)
+            val entities = entityMapper.toEntityList(recipes)
 
             // insert into cache
             recipeDao.insertRecipes(entities)
@@ -66,7 +66,7 @@ class SearchRecipe(
             }
 
             // emit List<Recipe> from cache
-            val list = cacheMapper.fromEntityList(cacheResult)
+            val list = entityMapper.fromEntityList(cacheResult)
             emit(DataState.success(list))
         }catch (e: Exception){
             emit(DataState.error<List<Recipe>>(e.message?: "Unknown Error"))

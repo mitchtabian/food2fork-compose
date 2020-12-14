@@ -3,7 +3,7 @@ package com.codingwithmitch.food2forkcompose.di
 import androidx.room.Room
 import com.codingwithmitch.food2forkcompose.cache.RecipeDao
 import com.codingwithmitch.food2forkcompose.cache.database.AppDatabase
-import com.codingwithmitch.food2forkcompose.cache.model.RecipeCacheMapper
+import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
 import com.codingwithmitch.food2forkcompose.presentation.BaseApplication
 import dagger.Module
 import dagger.Provides
@@ -32,8 +32,8 @@ object CacheModule {
 
     @Singleton
     @Provides
-    fun provideCacheRecipeMapper(): RecipeCacheMapper{
-        return RecipeCacheMapper()
+    fun provideCacheRecipeMapper(): RecipeEntityMapper{
+        return RecipeEntityMapper()
     }
 }
 

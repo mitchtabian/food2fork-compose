@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "recipes")
-data class RecipeCacheEntity(
+data class RecipeEntity(
 
     // Value from API
     @PrimaryKey(autoGenerate = false)

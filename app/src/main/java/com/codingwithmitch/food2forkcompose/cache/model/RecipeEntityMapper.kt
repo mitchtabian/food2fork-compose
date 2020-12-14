@@ -1,38 +1,31 @@
 package com.codingwithmitch.food2forkcompose.cache.model
 
-import android.util.Log
 import com.codingwithmitch.food2forkcompose.cache.exceptions.RecipeCacheException
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.util.EntityMapper
-import com.codingwithmitch.food2forkcompose.util.TAG
+import com.codingwithmitch.food2forkcompose.util.DomainMapper
 import java.lang.StringBuilder
 
-class RecipeCacheMapper : EntityMapper<RecipeCacheEntity, Recipe>{
+class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe>{
 
-    override fun mapFromEntity(entity: RecipeCacheEntity): Recipe {
+    override fun mapToDomainModel(model: RecipeEntity): Recipe {
         return Recipe(
-            id = entity.id,
-            title = entity.title,
-            featuredImage = entity.featuredImage,
-            rating = entity.rating,
-            publisher = entity.publisher,
-            sourceUrl = entity.sourceUrl,
-            description = entity.description,
-            cookingInstructions = entity.cookingInstructions,
-            ingredients = convertIngredientsToList(entity.ingredients),
-            dateAdded = entity.dateAdded,
-            dateUpdated = entity.dateUpdated,
+            id = model.id,
+            title = model.title,
+            featuredImage = model.featuredImage,
+            rating = model.rating,
+            publisher = model.publisher,
+            sourceUrl = model.sourceUrl,
+            description = model.description,
+            cookingInstructions = model.cookingInstructions,
+            ingredients = convertIngredientsToList(model.ingredients),
+            dateAdded = model.dateAdded,
+            dateUpdated = model.dateUpdated,
         )
     }
 
-    override fun mapToEntity(domainModel: Recipe): RecipeCacheEntity {
-        if(domainModel.id == null){
-            throw RecipeCacheException("Recipe id must not be null")
-        }
-        if(domainModel.title == null){
-            throw RecipeCacheException("Recipe title must not be null")
-        }
-        return RecipeCacheEntity(
+
+    override fun mapFromDomainModel(domainModel: Recipe): RecipeEntity {
+        return RecipeEntity(
             id = domainModel.id!!,
             title = domainModel.title!!,
             featuredImage = domainModel.featuredImage,
@@ -68,12 +61,12 @@ class RecipeCacheMapper : EntityMapper<RecipeCacheEntity, Recipe>{
         return list
     }
 
-    fun fromEntityList(initial: List<RecipeCacheEntity>): List<Recipe>{
-        return initial.map { mapFromEntity(it) }
+    fun fromEntityList(initial: List<RecipeEntity>): List<Recipe>{
+        return initial.map { mapToDomainModel(it) }
     }
 
-    fun toEntityList(initial: List<Recipe>): List<RecipeCacheEntity>{
-        return initial.map { mapToEntity(it) }
+    fun toEntityList(initial: List<Recipe>): List<RecipeEntity>{
+        return initial.map { mapFromDomainModel(it) }
     }
 }
 

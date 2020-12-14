@@ -4,20 +4,20 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.codingwithmitch.food2forkcompose.cache.model.RecipeCacheEntity
+import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntity
 import com.codingwithmitch.food2forkcompose.util.RECIPE_PAGINATION_PAGE_SIZE
 
 @Dao
 interface RecipeDao {
 
     @Insert
-    suspend fun insertRecipe(recipe: RecipeCacheEntity): Long
+    suspend fun insertRecipe(recipe: RecipeEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertRecipes(recipes: List<RecipeCacheEntity>): LongArray
+    suspend fun insertRecipes(recipes: List<RecipeEntity>): LongArray
 
     @Query("SELECT * FROM recipes WHERE id = :id")
-    suspend fun getRecipeById(id: Int): RecipeCacheEntity?
+    suspend fun getRecipeById(id: Int): RecipeEntity?
 
     @Query("DELETE FROM recipes WHERE id IN (:ids)")
     suspend fun deleteRecipes(ids: List<Int>): Int
@@ -39,7 +39,7 @@ interface RecipeDao {
         query: String,
         page: Int,
         pageSize: Int = RECIPE_PAGINATION_PAGE_SIZE
-    ): List<RecipeCacheEntity>
+    ): List<RecipeEntity>
 
     @Query("""
         SELECT * FROM recipes 
@@ -48,7 +48,7 @@ interface RecipeDao {
     suspend fun getAllRecipes(
         page: Int,
         pageSize: Int = RECIPE_PAGINATION_PAGE_SIZE
-    ): List<RecipeCacheEntity>
+    ): List<RecipeEntity>
 
 }
 
