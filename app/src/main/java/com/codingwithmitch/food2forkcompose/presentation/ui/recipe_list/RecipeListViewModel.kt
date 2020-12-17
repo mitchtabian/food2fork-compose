@@ -9,16 +9,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.interactors.RestoreRecipes
-import com.codingwithmitch.food2forkcompose.interactors.SearchRecipe
-import com.codingwithmitch.food2forkcompose.presentation.components.util.GenericDialogInfo
+import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecipes
+import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipe
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
-import com.codingwithmitch.food2forkcompose.repository.RecipeRepository
 import com.codingwithmitch.food2forkcompose.util.TAG
-import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import javax.inject.Named
 
 const val PAGE_SIZE = 30
@@ -32,10 +31,10 @@ const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.query.selected_category"
 class RecipeListViewModel
 @ViewModelInject
 constructor(
-        private val searchRecipe: SearchRecipe,
-        private val restoreRecipes: RestoreRecipes,
-        private @Named("auth_token") val token: String,
-        @Assisted private val savedStateHandle: SavedStateHandle,
+    private val searchRecipe: SearchRecipe,
+    private val restoreRecipes: RestoreRecipes,
+    private @Named("auth_token") val token: String,
+    @Assisted private val savedStateHandle: SavedStateHandle,
 ): ViewModel(){
 
     val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())

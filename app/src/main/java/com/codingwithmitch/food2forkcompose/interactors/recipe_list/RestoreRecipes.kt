@@ -1,4 +1,4 @@
-package com.codingwithmitch.food2forkcompose.interactors
+package com.codingwithmitch.food2forkcompose.interactors.recipe_list
 
 import com.codingwithmitch.food2forkcompose.cache.RecipeDao
 import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
@@ -8,7 +8,6 @@ import com.codingwithmitch.food2forkcompose.util.RECIPE_PAGINATION_PAGE_SIZE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 
 /**
  * Restore a list of recipes after process death.

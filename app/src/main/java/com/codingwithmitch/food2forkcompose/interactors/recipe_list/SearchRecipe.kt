@@ -1,4 +1,4 @@
-package com.codingwithmitch.food2forkcompose.interactors
+package com.codingwithmitch.food2forkcompose.interactors.recipe_list
 
 import android.util.Log
 import com.codingwithmitch.food2forkcompose.cache.RecipeDao
@@ -12,7 +12,6 @@ import com.codingwithmitch.food2forkcompose.util.TAG
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 
 class SearchRecipe(
     private val recipeDao: RecipeDao,
