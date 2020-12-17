@@ -35,9 +35,9 @@ interface RecipeDao {
      */
     @Query("""
         SELECT * FROM recipes 
-        WHERE title LIKE :query
-        OR description LIKE :query  
-        OR ingredients LIKE :query  
+        WHERE title LIKE '%' || :query || '%'
+        OR description LIKE '%' || :query || '%'  
+        OR ingredients LIKE '%' || :query || '%'  
         ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """)
     suspend fun searchRecipes(
@@ -46,19 +46,33 @@ interface RecipeDao {
         pageSize: Int = RECIPE_PAGINATION_PAGE_SIZE
     ): List<RecipeEntity>
 
-
     /**
-     * Retrieve ALL recipes up to a certain page number.
+     * Same as 'searchRecipes' function, but no query.
      */
     @Query("""
         SELECT * FROM recipes 
-        ORDER BY date_updated DESC LIMIT (:page * :pageSize)
+        ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
     """)
     suspend fun getAllRecipes(
         page: Int,
         pageSize: Int = RECIPE_PAGINATION_PAGE_SIZE
     ): List<RecipeEntity>
 
+    /**
+     * Restore Recipes after process death
+     */
+    @Query("""
+        SELECT * FROM recipes 
+        WHERE title LIKE '%' || :query || '%'
+        OR description LIKE '%' || :query || '%' 
+        OR ingredients LIKE '%' || :query || '%' 
+        ORDER BY date_updated DESC LIMIT (:page * :pageSize)
+        """)
+    suspend fun restoreRecipes(
+        query: String,
+        page: Int,
+        pageSize: Int = RECIPE_PAGINATION_PAGE_SIZE
+    ): List<RecipeEntity>
 }
 
 

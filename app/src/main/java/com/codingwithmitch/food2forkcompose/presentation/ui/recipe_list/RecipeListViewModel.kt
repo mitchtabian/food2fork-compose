@@ -9,6 +9,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
+import com.codingwithmitch.food2forkcompose.interactors.RestoreRecipes
 import com.codingwithmitch.food2forkcompose.interactors.SearchRecipe
 import com.codingwithmitch.food2forkcompose.presentation.components.util.GenericDialogInfo
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
@@ -32,6 +33,7 @@ class RecipeListViewModel
 @ViewModelInject
 constructor(
         private val searchRecipe: SearchRecipe,
+        private val restoreRecipes: RestoreRecipes,
         private @Named("auth_token") val token: String,
         @Assisted private val savedStateHandle: SavedStateHandle,
 ): ViewModel(){
@@ -78,45 +80,46 @@ constructor(
     }
 
     fun onTriggerEvent(event: RecipeListEvent){
-        viewModelScope.launch {
-            try {
-                when(event){
-                    is NewSearchEvent -> {
-                        newSearch()
-                    }
-                    is NextPageEvent -> {
-                        nextPage()
-                    }
-                    is RestoreStateEvent -> {
-                        restoreState()
-                    }
+        try {
+            when(event){
+                is NewSearchEvent -> {
+                    newSearch()
                 }
-            }catch (e: Exception){
-                Log.e(TAG, "launchJob: Exception: ${e}, ${e.cause}")
-                e.printStackTrace()
+                is NextPageEvent -> {
+                    nextPage()
+                }
+                is RestoreStateEvent -> {
+                    restoreState()
+                }
             }
-            finally {
-                Log.d(TAG, "launchJob: finally called.")
-            }
+        }catch (e: Exception){
+            Log.e(TAG, "launchJob: Exception: ${e}, ${e.cause}")
+            e.printStackTrace()
+        }
+        finally {
+            Log.d(TAG, "launchJob: finally called.")
         }
     }
 
-    private suspend fun restoreState(){
-//        loading.value = true
-//        // Must retrieve each page of results.
-//        val results: ArrayList<Recipe> = ArrayList()
-//        for(p in 1..page.value){
-//            Log.d(TAG, "restoreState: page: ${p}, query: ${query.value}")
-//            searchRecipe.execute(token = token, page = p, query = query.value ).onEach { list ->
-//                withContext(Main){
-//                    results.addAll(list)
-//                }
-//            }.launchIn(viewModelScope)
-//        }
-//        recipes.value = results
+    private fun restoreState(){
+        restoreRecipes.execute(page = page.value, query = query.value ).onEach { dataState ->
+            withContext(Main){
+                loading.value = dataState.loading
+
+                dataState.data?.let { list ->
+                    recipes.value = list
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(TAG, "restoreState: ${error}")
+                    // TODO("handle errors...")
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
-    private suspend fun newSearch(){
+    private fun newSearch(){
+        Log.d(TAG, "newSearch: query: ${query.value}")
         // New search. Reset the state
         resetSearchState()
 
@@ -137,8 +140,7 @@ constructor(
 
     }
 
-    private suspend fun nextPage(){
-        loading.value = true
+    private fun nextPage(){
         incrementPage()
         Log.d(TAG, "nextPage: triggered: ${page.value}")
 
