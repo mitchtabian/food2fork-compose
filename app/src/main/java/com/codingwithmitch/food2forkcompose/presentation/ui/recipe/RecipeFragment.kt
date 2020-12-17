@@ -1,6 +1,7 @@
 package com.codingwithmitch.food2forkcompose.presentation.ui.recipe
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import com.codingwithmitch.food2forkcompose.presentation.BaseApplication
 import com.codingwithmitch.food2forkcompose.presentation.components.LoadingRecipeShimmer
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
 import com.codingwithmitch.food2forkcompose.util.DEFAULT_RECIPE_IMAGE
+import com.codingwithmitch.food2forkcompose.util.TAG
 import com.codingwithmitch.food2forkcompose.util.loadPicture
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi

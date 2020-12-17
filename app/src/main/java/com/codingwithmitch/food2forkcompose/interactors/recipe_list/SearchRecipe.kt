@@ -35,21 +35,15 @@ class SearchRecipe(
             // throw exception to test dialogs
             //throw RecipeCacheException("Oopsie poopsie")
 
-            // search network
-            val networkResult = recipeService.search(
-                    token = token,
-                    page = page,
-                    query = query,
-            )
-
             // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
-            val recipes = dtoMapper.toDomainList(
-                    networkResult.recipes
+            val recipes = getRecipesFromNetwork(
+                token = token,
+                page = page,
+                query = query,
             )
-            val entities = entityMapper.toEntityList(recipes)
 
             // insert into cache
-            recipeDao.insertRecipes(entities)
+            recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
 
             // query the cache
             val cacheResult = if (query.isBlank()){
@@ -75,7 +69,16 @@ class SearchRecipe(
         }catch (e: Exception){
             emit(DataState.error<List<Recipe>>(e.message?: "Unknown Error"))
         }
+    }
 
+    private suspend fun getRecipesFromNetwork(token: String, page: Int, query: String): List<Recipe>{
+        return dtoMapper.toDomainList(
+            recipeService.search(
+                token = token,
+                page = page,
+                query = query,
+            ).recipes
+        )
     }
 }
 
