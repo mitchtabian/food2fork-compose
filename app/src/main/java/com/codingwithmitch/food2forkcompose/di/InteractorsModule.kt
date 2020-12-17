@@ -4,7 +4,7 @@ import com.codingwithmitch.food2forkcompose.cache.RecipeDao
 import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
 import com.codingwithmitch.food2forkcompose.interactors.recipe.GetRecipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecipes
-import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipe
+import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
 import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import dagger.Module
@@ -24,8 +24,8 @@ object InteractorsModule {
         recipeDao: RecipeDao,
         recipeEntityMapper: RecipeEntityMapper,
         recipeDtoMapper: RecipeDtoMapper
-    ): SearchRecipe {
-        return SearchRecipe(
+    ): SearchRecipes {
+        return SearchRecipes(
             recipeService = recipeService,
             recipeDao = recipeDao,
             entityMapper = recipeEntityMapper,

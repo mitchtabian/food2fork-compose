@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecipes
-import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipe
+import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
 import com.codingwithmitch.food2forkcompose.util.TAG
 import kotlinx.coroutines.Dispatchers.Main
@@ -31,7 +31,7 @@ const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.query.selected_category"
 class RecipeListViewModel
 @ViewModelInject
 constructor(
-    private val searchRecipe: SearchRecipe,
+    private val searchRecipe: SearchRecipes,
     private val restoreRecipes: RestoreRecipes,
     private @Named("auth_token") val token: String,
     @Assisted private val savedStateHandle: SavedStateHandle,

@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'de.mannodermaus.android-junit5'
 }
 
 android {
@@ -87,6 +88,9 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit"
 
+    def okhttp = "4.9.0"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp"
+
     def navigation = "2.3.1"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
@@ -99,6 +103,19 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     // Coroutines for room
     implementation "androidx.room:room-ktx:$room_version"
+
+    // Testing
+    def mockk_version = "1.9.2"
+    testImplementation "io.mockk:mockk:${mockk_version}"
+
+    def junit_jupiter_version = "5.7.0"
+    testImplementation  "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:${junit_jupiter_version}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_jupiter_version}"
+
+    // Mock web server
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp"
+    testImplementation "com.squareup.okhttp3:okhttp:$okhttp"
 }
 
 

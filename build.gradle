@@ -13,6 +13,9 @@ buildscript {
 
         def hilt = "2.28-alpha"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt"
+
+        def junit5 = "1.6.2.0"
+        classpath "de.mannodermaus.gradle.plugins:android-junit5:$junit5"
     }
 }
 
