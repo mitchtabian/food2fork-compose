@@ -40,12 +40,10 @@ class RecipeDaoFake(
         page: Int,
         pageSize: Int
     ): List<RecipeEntity> {
-        println("searchRecipes")
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
 
     override suspend fun getAllRecipes(page: Int, pageSize: Int): List<RecipeEntity> {
-        println("getAllRecipes")
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
 
