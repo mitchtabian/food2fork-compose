@@ -1,7 +1,6 @@
 package com.codingwithmitch.food2forkcompose.presentation.ui.recipe
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageAsset
@@ -28,7 +25,6 @@ import com.codingwithmitch.food2forkcompose.presentation.BaseApplication
 import com.codingwithmitch.food2forkcompose.presentation.components.LoadingRecipeShimmer
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
 import com.codingwithmitch.food2forkcompose.util.DEFAULT_RECIPE_IMAGE
-import com.codingwithmitch.food2forkcompose.util.TAG
 import com.codingwithmitch.food2forkcompose.util.loadPicture
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -101,7 +97,7 @@ fun RecipeView(
                     .fillMaxWidth()
     ) {
         recipe.featuredImage?.let { url ->
-            val image by loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).collectAsState()
+            val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
             image?.let { img ->
                 Image(
                         asset = img.asImageAsset(),
