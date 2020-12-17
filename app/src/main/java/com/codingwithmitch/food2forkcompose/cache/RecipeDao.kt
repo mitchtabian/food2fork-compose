@@ -28,12 +28,17 @@ interface RecipeDao {
     @Query("DELETE FROM recipes WHERE id = :primaryKey")
     suspend fun deleteRecipe(primaryKey: Int): Int
 
+    /**
+     * Retrieve recipes for a particular page.
+     * Ex: page = 2 retrieves recipes from 30-60.
+     * Ex: page = 3 retrieves recipes from 60-90
+     */
     @Query("""
         SELECT * FROM recipes 
         WHERE title LIKE :query
         OR description LIKE :query  
         OR ingredients LIKE :query  
-        ORDER BY date_updated DESC LIMIT (:page * :pageSize)
+        ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """)
     suspend fun searchRecipes(
         query: String,
@@ -41,6 +46,10 @@ interface RecipeDao {
         pageSize: Int = RECIPE_PAGINATION_PAGE_SIZE
     ): List<RecipeEntity>
 
+
+    /**
+     * Retrieve ALL recipes up to a certain page number.
+     */
     @Query("""
         SELECT * FROM recipes 
         ORDER BY date_updated DESC LIMIT (:page * :pageSize)

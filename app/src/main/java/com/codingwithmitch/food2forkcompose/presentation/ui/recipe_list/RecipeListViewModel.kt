@@ -45,14 +45,6 @@ constructor(
 
     val query = mutableStateOf("")
 
-    /**
-     * Display a dialog for the user to see.
-     * If GenericDialogInfo == null, do not a show dialog.
-     */
-    val genericDialogInfo: MutableState<GenericDialogInfo?> = mutableStateOf(null)
-
-    val errorDialogInfo: MutableState<GenericDialogInfo?> = mutableStateOf(null)
-
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
     var categoryScrollPosition: Float = 0f
@@ -137,16 +129,8 @@ constructor(
                 }
 
                 dataState.error?.let { error ->
-                    onChangeErrorDialogInfo(
-                            dialogInfo = GenericDialogInfo(
-                                    onDismiss = {onChangeErrorDialogInfo(null)},
-                                    title = "Error",
-                                    description = error,
-                                    positiveBtnTxt = "Ok",
-                                    onPositiveAction = {onChangeErrorDialogInfo(null)},
-                                    onNegativeAction = {}
-                            )
-                    )
+                    Log.e(TAG, "newSearch: ${error}")
+                    // TODO("handle errors...")
                 }
             }
         }.launchIn(viewModelScope)
@@ -173,14 +157,6 @@ constructor(
 
     fun onChangeRecipeScrollPosition(position: Int){
         setListScrollPosition(position)
-    }
-
-    fun onChangeGenericDialogInfo(dialogInfo: GenericDialogInfo?){
-        genericDialogInfo.value = dialogInfo
-    }
-
-    fun onChangeErrorDialogInfo(dialogInfo: GenericDialogInfo?){
-        errorDialogInfo.value = dialogInfo
     }
 
     /**

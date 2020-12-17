@@ -32,7 +32,8 @@ class SearchRecipe(
             // just to show pagination, api is fast
             delay(1000)
 
-            throw RecipeCacheException("Oopsie poopsie")
+            // throw exception to test dialogs
+            //throw RecipeCacheException("Oopsie poopsie")
 
             // search network
             val networkResult = recipeService.search(
