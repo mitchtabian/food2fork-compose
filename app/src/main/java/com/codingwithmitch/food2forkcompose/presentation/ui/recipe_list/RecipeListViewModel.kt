@@ -75,7 +75,6 @@ constructor(
         else{
             onTriggerEvent(NewSearchEvent())
         }
-
     }
 
     fun onTriggerEvent(event: RecipeListEvent){

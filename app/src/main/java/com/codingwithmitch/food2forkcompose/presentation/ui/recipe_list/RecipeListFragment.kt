@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumnForIndexed
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.ExperimentalFocus
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -45,7 +44,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 @ExperimentalMaterialApi
-@ExperimentalFocus
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class RecipeListFragment: Fragment() {
@@ -148,7 +146,6 @@ class RecipeListFragment: Fragment() {
                                                 )
                                             },
                                             onChangeScrollPosition = viewModel::onChangeRecipeScrollPosition,
-                                            firstVisibleIndex = viewModel.recipeListScrollPosition,
                                     )
                                 }
                                 ErrorSnackbar(
@@ -176,36 +173,34 @@ fun RecipeList(
         onSelectRecipe: (Int) -> Unit,
         onError: (String) -> Unit,
         onChangeScrollPosition: (Int) -> Unit,
-        firstVisibleIndex: Int,
 ){
-    val listState = rememberLazyListState(
-            initialFirstVisibleItemIndex = firstVisibleIndex
-    )
-    Log.d(TAG, "RecipeList: FIRST VISIBLE INDEX: ${firstVisibleIndex}")
+    Log.d(TAG, "RecipeList: # recipes: ${recipes.size}")
 
-    LazyColumnForIndexed(
-            items = recipes,
-            state = listState,
-    ) { index, recipe ->
-        onChangeScrollPosition(index)
-        Log.d(TAG, "RecipeList: index: ${index}")
-        if((index + 1) >= (page * PAGE_SIZE) && !isLoading){
-            onNextPage()
-        }
-        RecipeCard(
+    LazyColumn()
+    {
+        itemsIndexed(
+            items = recipes
+        ){ index, recipe ->
+            onChangeScrollPosition(index)
+            Log.d(TAG, "RecipeList: index: ${index}")
+            if((index + 1) >= (page * PAGE_SIZE) && !isLoading){
+                onNextPage()
+            }
+            RecipeCard(
                 recipe = recipe,
                 onClick = {
                     recipe.id?.let{
                         onSelectRecipe(it)
                     }?: onError("Error. There's something wrong with that recipe.")
                 }
-        )
+            )
+        }
     }
+
 }
 
 
 
-@ExperimentalFocus
 @Composable
 fun SearchAppBar(
     query: String,
@@ -264,8 +259,9 @@ fun SearchAppBar(
                                                 linkTo(top = parent.top, bottom = parent.bottom)
                                             },
                                     onClick = onToggleTheme,
-                                    icon = { Icon(Icons.Filled.MoreVert) },
-                            )
+                            ){
+                                Icon(Icons.Filled.MoreVert)
+                            }
                         }
                     }
                     val scrollState = rememberScrollState()
