@@ -139,19 +139,21 @@ constructor(
     }
 
     private fun nextPage(){
-        incrementPage()
-        Log.d(TAG, "nextPage: triggered: ${page.value}")
+        if((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE) ){
+            incrementPage()
+            Log.d(TAG, "nextPage: triggered: ${page.value}")
 
-        if(page.value > 1){
-            searchRecipe.execute(token = token, page = page.value, query = query.value ).onEach { dataState ->
-                withContext(Main){
-                    loading.value = dataState.loading
+            if(page.value > 1){
+                searchRecipe.execute(token = token, page = page.value, query = query.value ).onEach { dataState ->
+                    withContext(Main){
+                        loading.value = dataState.loading
 
-                    dataState.data?.let { list ->
-                        appendRecipes(list)
+                        dataState.data?.let { list ->
+                            appendRecipes(list)
+                        }
                     }
-                }
-            }.launchIn(viewModelScope)
+                }.launchIn(viewModelScope)
+            }
         }
     }
 
