@@ -1,18 +1,18 @@
 package com.codingwithmitch.food2forkcompose.domain.model
 
+import java.util.*
+
 /**
- * See Recipe example: https://recipesapi.herokuapp.com/api/get/?rId=47230
+ * See Recipe example: https://food2fork.ca/
  */
-class Recipe (
-    var id: Int? = null,
-    var title: String? = null,
-    var publisher: String? = null,
-    var featuredImage: String? = null,
-    var rating: Int? = 0,
-    var sourceUrl: String? = null,
-    var description: String? = null,
-    var cookingInstructions: String? = null,
-    var ingredients: List<String>? = null,
-    var dateAdded: String? = null,
-    var dateUpdated: String? = null,
+data class Recipe (
+    val id: Int,
+    val title: String,
+    val publisher: String,
+    val featuredImage: String,
+    val rating: Int,
+    val sourceUrl: String,
+    val ingredients: List<String> = listOf(),
+    val dateAdded: Date,
+    val dateUpdated: Date,
 )

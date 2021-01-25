@@ -1,9 +1,9 @@
 package com.codingwithmitch.food2forkcompose.cache.model
 
-import com.codingwithmitch.food2forkcompose.cache.exceptions.RecipeCacheException
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
+import com.codingwithmitch.food2forkcompose.util.DateUtils
 import com.codingwithmitch.food2forkcompose.util.DomainMapper
-import java.lang.StringBuilder
+import java.lang.NullPointerException
 
 class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe>{
 
@@ -15,28 +15,25 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe>{
             rating = model.rating,
             publisher = model.publisher,
             sourceUrl = model.sourceUrl,
-            description = model.description,
-            cookingInstructions = model.cookingInstructions,
             ingredients = convertIngredientsToList(model.ingredients),
-            dateAdded = model.dateAdded,
-            dateUpdated = model.dateUpdated,
+            dateAdded = DateUtils.longToDate(model.dateAdded),
+            dateUpdated = DateUtils.longToDate(model.dateUpdated),
         )
     }
 
 
     override fun mapFromDomainModel(domainModel: Recipe): RecipeEntity {
         return RecipeEntity(
-            id = domainModel.id!!,
-            title = domainModel.title!!,
+            id = domainModel.id,
+            title = domainModel.title,
             featuredImage = domainModel.featuredImage,
             rating = domainModel.rating,
             publisher = domainModel.publisher,
             sourceUrl = domainModel.sourceUrl,
-            description = domainModel.description,
-            cookingInstructions = domainModel.cookingInstructions,
-            ingredients = convertIngredientListToString(domainModel.ingredients?: listOf()),
-            dateAdded = domainModel.dateAdded,
-            dateUpdated = domainModel.dateUpdated,
+            ingredients = convertIngredientListToString(domainModel.ingredients),
+            dateAdded = DateUtils.dateToLong(domainModel.dateAdded),
+            dateUpdated = DateUtils.dateToLong(domainModel.dateUpdated),
+            dateCached = DateUtils.dateToLong(DateUtils.createTimestamp())
         )
     }
 
@@ -44,7 +41,7 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe>{
      * "Carrot, potato, Chicken, ..."
      */
     private fun convertIngredientListToString(ingredients: List<String>): String {
-        val ingredientsString: StringBuilder = StringBuilder()
+        val ingredientsString = StringBuilder()
         for(ingredient in ingredients){
             ingredientsString.append("$ingredient,")
         }

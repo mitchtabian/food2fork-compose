@@ -13,11 +13,13 @@ import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecip
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
 import com.codingwithmitch.food2forkcompose.util.TAG
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import javax.inject.Named
 
 const val PAGE_SIZE = 30
@@ -28,13 +30,14 @@ const val STATE_KEY_LIST_POSITION = "recipe.state.query.list_position"
 const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.query.selected_category"
 
 @ExperimentalCoroutinesApi
+@HiltViewModel
 class RecipeListViewModel
-@ViewModelInject
+@Inject
 constructor(
     private val searchRecipe: SearchRecipes,
     private val restoreRecipes: RestoreRecipes,
     private @Named("auth_token") val token: String,
-    @Assisted private val savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ): ViewModel(){
 
     val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
@@ -70,10 +73,10 @@ constructor(
 
         // Were they doing something before the process died?
         if(recipeListScrollPosition != 0){
-            onTriggerEvent(RestoreStateEvent())
+            onTriggerEvent(RestoreStateEvent)
         }
         else{
-            onTriggerEvent(NewSearchEvent())
+            onTriggerEvent(NewSearchEvent)
         }
     }
 

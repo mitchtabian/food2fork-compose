@@ -1,6 +1,5 @@
 package com.codingwithmitch.food2forkcompose.interactors.recipe_list
 
-import android.util.Log
 import com.codingwithmitch.food2forkcompose.cache.RecipeDao
 import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
 import com.codingwithmitch.food2forkcompose.domain.data.DataState
@@ -8,7 +7,6 @@ import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import com.codingwithmitch.food2forkcompose.util.RECIPE_PAGINATION_PAGE_SIZE
-import com.codingwithmitch.food2forkcompose.util.TAG
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

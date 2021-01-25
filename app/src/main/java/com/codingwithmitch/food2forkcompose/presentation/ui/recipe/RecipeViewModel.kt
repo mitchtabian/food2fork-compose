@@ -3,30 +3,31 @@ package com.codingwithmitch.food2forkcompose.presentation.ui.recipe
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe.GetRecipe
 import com.codingwithmitch.food2forkcompose.util.TAG
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import javax.inject.Named
 
 const val STATE_KEY_RECIPE = "recipe.state.recipe.key"
 
 @ExperimentalCoroutinesApi
+@HiltViewModel
 class RecipeViewModel
-@ViewModelInject
+@Inject
 constructor(
     private val getRecipe: GetRecipe,
     private @Named("auth_token") val token: String,
-    @Assisted private val state: SavedStateHandle,
+    private val state: SavedStateHandle,
 ): ViewModel(){
 
     val recipe: MutableState<Recipe?> = mutableStateOf(null)

@@ -3,10 +3,10 @@ package com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list
 
 sealed class RecipeListEvent {
 
-    class NewSearchEvent: RecipeListEvent()
+    object NewSearchEvent: RecipeListEvent()
 
-    class NextPageEvent: RecipeListEvent()
+    object NextPageEvent: RecipeListEvent()
 
     // restore after process death
-    class RestoreStateEvent: RecipeListEvent()
+    object RestoreStateEvent: RecipeListEvent()
 }

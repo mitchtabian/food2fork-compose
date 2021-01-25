@@ -10,14 +10,14 @@ import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 
 @Module
-@InstallIn(ActivityRetainedComponent::class)
+@InstallIn(ViewModelComponent::class)
 object InteractorsModule {
 
-    @ActivityRetainedScoped
+    @ViewModelScoped
     @Provides
     fun provideSearchRecipe(
         recipeService: RecipeService,
@@ -33,7 +33,7 @@ object InteractorsModule {
         )
     }
 
-    @ActivityRetainedScoped
+    @ViewModelScoped
     @Provides
     fun provideRestoreRecipes(
         recipeDao: RecipeDao,
@@ -45,7 +45,7 @@ object InteractorsModule {
         )
     }
 
-    @ActivityRetainedScoped
+    @ViewModelScoped
     @Provides
     fun provideGetRecipe(
         recipeDao: RecipeDao,

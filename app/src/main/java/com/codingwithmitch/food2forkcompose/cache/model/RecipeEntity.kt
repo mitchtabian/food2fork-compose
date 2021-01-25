@@ -18,27 +18,19 @@ data class RecipeEntity(
 
     // Value from API
     @ColumnInfo(name = "publisher")
-    var publisher: String? = null,
+    var publisher: String,
 
     // Value from API
     @ColumnInfo(name = "featured_image")
-    var featuredImage: String? = null,
+    var featuredImage: String,
 
     // Value from API
     @ColumnInfo(name = "rating")
-    var rating: Int? = 0,
+    var rating: Int,
 
     // Value from API
     @ColumnInfo(name = "source_url")
-    var sourceUrl: String? = null,
-
-    // Value from API
-    @ColumnInfo(name = "description")
-    var description: String? = null,
-
-    // Value from API
-    @ColumnInfo(name = "cooking_instructions")
-    var cookingInstructions: String? = null,
+    var sourceUrl: String,
 
     /**
      * Value from API
@@ -46,28 +38,25 @@ data class RecipeEntity(
      * EX: "carrots, cabbage, chicken,"
      */
     @ColumnInfo(name = "ingredients")
-    var ingredients: String? = null,
+    var ingredients: String = "",
 
     /**
      * Value from API
-     * EX: "November 11 2020"
      */
     @ColumnInfo(name = "date_added")
-    var dateAdded: String? = null,
+    var dateAdded: Long,
 
     /**
      * Value from API
-     * EX: "November 11 2020"
      */
     @ColumnInfo(name = "date_updated")
-    var dateUpdated: String? = null,
+    var dateUpdated: Long,
 
     /**
      * The date this recipe was "refreshed" in the cache.
-     * EX: TODO("Add format example")
      */
     @ColumnInfo(name = "date_cached")
-    var dateCached: String? = null,
+    var dateCached: Long,
 )
 
 

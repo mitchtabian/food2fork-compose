@@ -36,7 +36,6 @@ interface RecipeDao {
     @Query("""
         SELECT * FROM recipes 
         WHERE title LIKE '%' || :query || '%'
-        OR description LIKE '%' || :query || '%'  
         OR ingredients LIKE '%' || :query || '%'  
         ORDER BY date_updated DESC LIMIT :pageSize OFFSET ((:page - 1) * :pageSize)
         """)
@@ -64,7 +63,6 @@ interface RecipeDao {
     @Query("""
         SELECT * FROM recipes 
         WHERE title LIKE '%' || :query || '%'
-        OR description LIKE '%' || :query || '%' 
         OR ingredients LIKE '%' || :query || '%' 
         ORDER BY date_updated DESC LIMIT (:page * :pageSize)
         """)
