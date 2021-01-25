@@ -97,9 +97,6 @@ constructor(
             Log.e(TAG, "launchJob: Exception: ${e}, ${e.cause}")
             e.printStackTrace()
         }
-        finally {
-            Log.d(TAG, "launchJob: finally called.")
-        }
     }
 
     private fun restoreState(){
@@ -153,6 +150,11 @@ constructor(
 
                         dataState.data?.let { list ->
                             appendRecipes(list)
+                        }
+
+                        dataState.error?.let { error ->
+                            Log.e(TAG, "nextPage: ${error}")
+                            // TODO("handle errors...")
                         }
                     }
                 }.launchIn(viewModelScope)

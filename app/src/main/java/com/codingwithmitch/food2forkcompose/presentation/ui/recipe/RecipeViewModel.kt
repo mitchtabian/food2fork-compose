@@ -55,9 +55,6 @@ constructor(
             Log.e(TAG, "launchJob: Exception: ${e}, ${e.cause}")
             e.printStackTrace()
         }
-        finally {
-            Log.d(TAG, "launchJob: finally called.")
-        }
     }
 
     private fun getRecipe(id: Int){
