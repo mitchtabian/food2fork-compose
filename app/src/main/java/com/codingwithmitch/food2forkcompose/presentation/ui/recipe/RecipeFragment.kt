@@ -30,73 +30,73 @@ const val IMAGE_HEIGHT = 260
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class RecipeFragment: Fragment() {
+class RecipeFragment : Fragment() {
 
-    @Inject
-    lateinit var application: BaseApplication
+  @Inject
+  lateinit var application: BaseApplication
 
-    private val snackbarController = SnackbarController(lifecycleScope)
+  private val snackbarController = SnackbarController(lifecycleScope)
 
-    private val viewModel: RecipeViewModel by viewModels()
+  private val viewModel: RecipeViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.getInt("recipeId")?.let { recipeId ->
-            viewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))
-        }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    arguments?.getInt("recipeId")?.let { recipeId ->
+      viewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))
     }
+  }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply{
-            setContent {
+  override fun onCreateView(
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View {
+    return ComposeView(requireContext()).apply {
+      setContent {
 
-                val loading = viewModel.loading.value
+        val loading = viewModel.loading.value
 
-                val recipe = viewModel.recipe.value
+        val recipe = viewModel.recipe.value
 
-                val scaffoldState = rememberScaffoldState()
+        val scaffoldState = rememberScaffoldState()
 
-                AppTheme(
-                        displayProgressBar = loading,
+        AppTheme(
+            displayProgressBar = loading,
+            scaffoldState = scaffoldState,
+            darkTheme = application.isDark.value,
+            onDismiss = { },
+        ) {
+          Scaffold(
+              scaffoldState = scaffoldState,
+              snackbarHost = {
+                scaffoldState.snackbarHostState
+              }
+          ) {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+              if (loading && recipe == null) LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
+              else recipe?.let {
+                if (it.id == 1) { // force an error to demo snackbar
+                  snackbarController.getScope().launch {
+                    snackbarController.showSnackbar(
                         scaffoldState = scaffoldState,
-                        darkTheme = application.isDark.value,
-                ){
-                    Scaffold(
-                            scaffoldState = scaffoldState,
-                            snackbarHost = {
-                                scaffoldState.snackbarHostState
-                            }
-                    ) {
-                        Box (
-                                modifier = Modifier.fillMaxSize()
-                        ){
-                            if (loading && recipe == null) LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
-                            else recipe?.let {
-                                if(it.id == 1) { // force an error to demo snackbar
-                                    snackbarController.getScope().launch {
-                                        snackbarController.showSnackbar(
-                                                scaffoldState = scaffoldState,
-                                                message = "An error occurred with this recipe",
-                                                actionLabel = "Ok"
-                                        )
-                                    }
-                                }
-                                else{
-                                    RecipeView(
-                                            recipe = it,
-                                    )
-                                }
-                            }
-                        }
-                    }
+                        message = "An error occurred with this recipe",
+                        actionLabel = "Ok"
+                    )
+                  }
+                } else {
+                  RecipeView(
+                      recipe = it,
+                  )
                 }
+              }
             }
+          }
         }
+      }
     }
+  }
 }
 
 

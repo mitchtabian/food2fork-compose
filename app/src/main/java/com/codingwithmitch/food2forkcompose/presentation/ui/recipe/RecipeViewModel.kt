@@ -59,19 +59,16 @@ constructor(
 
     private fun getRecipe(id: Int){
         getRecipe.execute(id, token).onEach { dataState ->
-            withContext(Main){
+            loading.value = dataState.loading
 
-                loading.value = dataState.loading
+            dataState.data?.let { data ->
+                recipe.value = data
+                state.set(STATE_KEY_RECIPE, data.id)
+            }
 
-                dataState.data?.let { data ->
-                    recipe.value = data
-                    state.set(STATE_KEY_RECIPE, data.id)
-                }
-
-                dataState.error?.let { error ->
-                    Log.e(TAG, "getRecipe: ${error}")
-                    // TODO("handle errors")
-                }
+            dataState.error?.let { error ->
+                Log.e(TAG, "getRecipe: ${error}")
+                // TODO("handle errors")
             }
         }.launchIn(viewModelScope)
     }

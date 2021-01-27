@@ -1,7 +1,6 @@
 package com.codingwithmitch.food2forkcompose.presentation.components.util
 
 import androidx.compose.animation.core.*
-import kotlin.math.tan
 
 
 /**

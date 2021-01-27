@@ -18,64 +18,65 @@ class SearchRecipes(
     private val dtoMapper: RecipeDtoMapper,
 ) {
 
-    fun execute(
-        token: String,
-        page: Int,
-        query: String
-    ): Flow<DataState<List<Recipe>>> = flow {
+  fun execute(
+      token: String,
+      page: Int,
+      query: String
+  ): Flow<DataState<List<Recipe>>> = flow {
 
-        try {
-            emit(DataState.loading())
+    try {
+      emit(DataState.loading())
 
-            // just to show pagination, api is fast
-            delay(1000)
+      // just to show pagination, api is fast
+      delay(1000)
 
-            // throw exception to test dialogs
-            //throw RecipeCacheException("Oopsie poopsie")
+      throw Exception("Search FAILED!")
 
-            // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
-            val recipes = getRecipesFromNetwork(
-                token = token,
-                page = page,
-                query = query,
-            )
+      // throw exception to test dialogs
+      //throw RecipeCacheException("Oopsie poopsie")
 
-            // insert into cache
-            recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
+      // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
+      val recipes = getRecipesFromNetwork(
+          token = token,
+          page = page,
+          query = query,
+      )
 
-            // query the cache
-            val cacheResult = if (query.isBlank()){
-                recipeDao.getAllRecipes(
-                        pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                        page = page
-                )
-            }
-            else{
-                recipeDao.searchRecipes(
-                        query = query,
-                        pageSize = RECIPE_PAGINATION_PAGE_SIZE,
-                        page = page
-                )
-            }
+      // insert into cache
+      recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
 
-            // emit List<Recipe> from cache
-            val list = entityMapper.fromEntityList(cacheResult)
-
-            emit(DataState.success(list))
-        }catch (e: Exception){
-            emit(DataState.error<List<Recipe>>(e.message?: "Unknown Error"))
-        }
-    }
-
-    private suspend fun getRecipesFromNetwork(token: String, page: Int, query: String): List<Recipe>{
-        return dtoMapper.toDomainList(
-            recipeService.search(
-                token = token,
-                page = page,
-                query = query,
-            ).recipes
+      // query the cache
+      val cacheResult = if (query.isBlank()) {
+        recipeDao.getAllRecipes(
+            pageSize = RECIPE_PAGINATION_PAGE_SIZE,
+            page = page
         )
+      } else {
+        recipeDao.searchRecipes(
+            query = query,
+            pageSize = RECIPE_PAGINATION_PAGE_SIZE,
+            page = page
+        )
+      }
+
+      // emit List<Recipe> from cache
+      val list = entityMapper.fromEntityList(cacheResult)
+
+      emit(DataState.success(list))
+    } catch (e: Exception) {
+      emit(DataState.error<List<Recipe>>(e.message ?: "Unknown Error"))
     }
+  }
+
+  private suspend fun getRecipesFromNetwork(token: String, page: Int, query: String): List<Recipe> {
+    return dtoMapper.toDomainList(
+        recipeService.search(
+            token = token,
+            page = page,
+            query = query,
+        ).recipes
+    )
+  }
 }
 
 
