@@ -93,16 +93,6 @@ fun ProcessMessageStack(
       negativeAction = dialogInfo.negativeAction
     )
   }
-//  if (messageStack?.isNotEmpty() == true) {
-//    val dialogInfo =
-//      GenericDialog(
-//        onDismiss = onDismiss,
-//        title = dialogInfo.title,
-//        description = dialogInfo.description,
-//        positiveAction = dialogInfo.positiveAction,
-//        negativeAction = dialogInfo.negativeAction
-//      )
-//  }
 }
 
 
