@@ -60,7 +60,7 @@ constructor(
 
   var recipeListScrollPosition = 0
 
-  // Deque for "First-In-First-Out" behavior (Deque = double-ended queue)
+  // Queue for "First-In-First-Out" behavior
   val messageStack: MutableState<Queue<GenericDialogInfo>> = mutableStateOf(LinkedList())
 
   fun removeOldestMessage(){
