@@ -1,6 +1,7 @@
 package com.codingwithmitch.food2forkcompose.presentation.ui.recipe
 
 import android.util.Log
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -9,20 +10,20 @@ import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe.GetRecipe
 import com.codingwithmitch.food2forkcompose.util.TAG
+import com.codingwithmitch.mvvmrecipeapp.presentation.components.util.SnackbarController
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
 const val STATE_KEY_RECIPE = "recipe.state.recipe.key"
 
+@ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class RecipeViewModel
+class RecipeDetailViewModel
 @Inject
 constructor(
     private val getRecipe: GetRecipe,
@@ -34,8 +35,9 @@ constructor(
 
     val loading = mutableStateOf(false)
 
-    init {
+    val snackbarController = SnackbarController(viewModelScope)
 
+    init {
         // restore if process dies
         state.get<Int>(STATE_KEY_RECIPE)?.let{ recipeId ->
             onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))

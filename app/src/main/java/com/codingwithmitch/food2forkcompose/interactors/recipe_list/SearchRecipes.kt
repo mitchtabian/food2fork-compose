@@ -30,10 +30,7 @@ class SearchRecipes(
       // just to show pagination, api is fast
       delay(1000)
 
-      throw Exception("Search FAILED!")
-
-      // throw exception to test dialogs
-      //throw RecipeCacheException("Oopsie poopsie")
+//      throw Exception("Search FAILED!")
 
       // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
       val recipes = getRecipesFromNetwork(

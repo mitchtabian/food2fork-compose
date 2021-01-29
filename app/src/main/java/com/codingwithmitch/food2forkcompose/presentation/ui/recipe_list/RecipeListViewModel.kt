@@ -1,6 +1,7 @@
 package com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list
 
 import android.util.Log
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +17,7 @@ import com.codingwithmitch.food2forkcompose.presentation.components.NegativeActi
 import com.codingwithmitch.food2forkcompose.presentation.components.PositiveAction
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
 import com.codingwithmitch.food2forkcompose.util.TAG
+import com.codingwithmitch.mvvmrecipeapp.presentation.components.util.SnackbarController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
@@ -30,6 +32,7 @@ const val STATE_KEY_QUERY = "recipe.state.query.key"
 const val STATE_KEY_LIST_POSITION = "recipe.state.query.list_position"
 const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.query.selected_category"
 
+@ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class RecipeListViewModel
@@ -44,6 +47,8 @@ constructor(
   val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
 
   val loading = mutableStateOf(false)
+
+  val snackbarController = SnackbarController(viewModelScope)
 
   // Pagination starts at '1' (-1 = exhausted?)
   val page = mutableStateOf(1)

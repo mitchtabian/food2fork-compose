@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.codingwithmitch.food2forkcompose.presentation.components.util.ShimmerAnimationDefinitions
 import com.codingwithmitch.food2forkcompose.presentation.components.util.ShimmerAnimationDefinitions.*
 
+const val IMAGE_HEIGHT = 260
+
 @Composable
 fun LoadingRecipeShimmer(
     imageHeight: Dp,

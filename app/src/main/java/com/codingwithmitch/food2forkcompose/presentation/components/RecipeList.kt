@@ -1,22 +1,19 @@
 package com.codingwithmitch.food2forkcompose.presentation.components
 
-import android.os.Bundle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.codingwithmitch.food2forkcompose.R
+import androidx.navigation.compose.navigate
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
+import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.PAGE_SIZE
-import com.codingwithmitch.mvvmrecipeapp.presentation.components.util.SnackbarController
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
@@ -28,8 +25,6 @@ fun RecipeList(
     page: Int,
     onTriggerNextPage: () -> Unit,
     navController: NavController,
-    scaffoldState: ScaffoldState,
-    snackbarController: SnackbarController,
 ){
     Box(modifier = Modifier
         .background(color = MaterialTheme.colors.surface)
@@ -48,9 +43,8 @@ fun RecipeList(
                     RecipeCard(
                         recipe = recipe,
                         onClick = {
-                            val bundle = Bundle()
-                            bundle.putInt("recipeId", recipe.id)
-                            navController.navigate(R.id.viewRecipe, bundle)
+                            val route = Screen.RecipeDetail.route + "/${recipe.id}"
+                            navController.navigate(route = route)
                         }
                     )
                 }
@@ -58,3 +52,18 @@ fun RecipeList(
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

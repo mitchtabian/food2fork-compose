@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.IMAGE_HEIGHT
 import com.codingwithmitch.food2forkcompose.util.DEFAULT_RECIPE_IMAGE
 import com.codingwithmitch.food2forkcompose.util.loadPicture
 import kotlinx.coroutines.ExperimentalCoroutinesApi
