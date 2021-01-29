@@ -61,12 +61,12 @@ constructor(
   var recipeListScrollPosition = 0
 
   // Deque for "First-In-First-Out" behavior (Deque = double-ended queue)
-  val messageStack: MutableState<Deque<GenericDialogInfo>> = mutableStateOf(ArrayDeque())
+  val messageStack: MutableState<Queue<GenericDialogInfo>> = mutableStateOf(LinkedList())
 
   fun removeOldestMessage(){
     if (messageStack.value.isNotEmpty()) {
       val update = messageStack.value
-      update.pollLast() // remove last (oldest message)
+      update.remove() // remove first (oldest message)
       messageStack.value = ArrayDeque() // force recompose (bug?)
       messageStack.value = update
     }
@@ -144,7 +144,7 @@ constructor(
 
       dataState.error?.let { error ->
         Log.e(TAG, "newSearch: ${error}")
-        messageStack.value.push(
+        messageStack.value.offer(
             GenericDialogInfo.Builder(
                 title = "An Error Occurred",
                 onDismiss = {removeOldestMessage()}
@@ -158,7 +158,7 @@ constructor(
                 )
                 .build()
         )
-        messageStack.value.push(
+        messageStack.value.offer(
             GenericDialogInfo.Builder(
                 title = "An Error Occurred",
                 onDismiss = {removeOldestMessage()}
@@ -172,7 +172,7 @@ constructor(
                 )
                 .build()
         )
-        messageStack.value.push(
+        messageStack.value.offer(
             GenericDialogInfo.Builder(
                 title = "An Error Occurred",
                 onDismiss = {removeOldestMessage()}
