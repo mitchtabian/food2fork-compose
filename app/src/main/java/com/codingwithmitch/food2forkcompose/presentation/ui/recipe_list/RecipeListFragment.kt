@@ -58,8 +58,6 @@ class RecipeListFragment : Fragment() {
 
         val messageStack = viewModel.messageStack
 
-        Log.d(TAG, "onCreateView: message stack: ${messageStack.size}")
-
         val scaffoldState = rememberScaffoldState()
 
         AppTheme(

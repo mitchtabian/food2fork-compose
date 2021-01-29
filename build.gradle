@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        def gradle = '4.2.0-beta03'
+        def gradle = '7.0.0-alpha04'
         classpath "com.android.tools.build:gradle:$gradle"
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

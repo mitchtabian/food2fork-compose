@@ -58,10 +58,6 @@ constructor(
 
   val messageStack: SnapshotStateList<GenericDialogInfo> = mutableStateListOf()
 
-  fun onRemoveMessage(index: Int){
-    messageStack.removeAt(index)
-  }
-
   fun removeBottomMessage(){
     if (messageStack.isNotEmpty()) {
       messageStack.removeAt(0)
