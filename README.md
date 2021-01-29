@@ -8,4 +8,5 @@ It contains the same overall functionality but has additional features:
 1. Caching
 2. Use-cases
 3. Unit tests (use-cases)
+4. Compose only navigation (one activity, zero fragments)
 
