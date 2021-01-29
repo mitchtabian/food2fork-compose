@@ -26,12 +26,16 @@ class GetRecipe (
         recipeId: Int,
         token: String,
     ): Flow<DataState<Recipe>> = flow {
-
         try {
             emit(DataState.loading())
 
             // just to show loading, cache is fast
             delay(1000)
+
+            // force error for testing
+            if(recipeId == 1){
+                throw Exception("That recipe does not exist.")
+            }
 
             var recipe = getRecipeFromCache(recipeId = recipeId)
 

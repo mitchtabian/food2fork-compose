@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                         })
                     ) { navBackStackEntry ->
                         RecipeDetailScreen(
+                            navController = navController,
                             isDarkTheme = (application as BaseApplication).isDark.value,
                             recipeId = navBackStackEntry.arguments?.getInt("recipeId"),
                             navBackStackEntry = navBackStackEntry,

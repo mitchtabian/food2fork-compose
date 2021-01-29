@@ -48,7 +48,7 @@ fun AppTheme(
   darkTheme: Boolean,
   displayProgressBar: Boolean,
   scaffoldState: ScaffoldState,
-  messageStack: Queue<GenericDialogInfo>? = null,
+  messageQueue: Queue<GenericDialogInfo>? = null,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -72,7 +72,7 @@ fun AppTheme(
         modifier = Modifier.align(Alignment.BottomCenter)
       )
       ProcessMessageStack(
-        messageStack = messageStack,
+        messageQueue = messageQueue,
         onDismiss = onDismiss,
       )
     }
@@ -81,10 +81,10 @@ fun AppTheme(
 
 @Composable
 fun ProcessMessageStack(
-  messageStack: Queue<GenericDialogInfo>?,
+  messageQueue: Queue<GenericDialogInfo>?,
   onDismiss: () -> Unit,
 ) {
-  messageStack?.peek()?.let { dialogInfo ->
+  messageQueue?.peek()?.let { dialogInfo ->
     GenericDialog(
       onDismiss = onDismiss,
       title = dialogInfo.title,

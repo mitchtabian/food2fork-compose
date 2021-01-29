@@ -11,7 +11,6 @@ import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecipes
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
 import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialogInfo
-import com.codingwithmitch.food2forkcompose.presentation.components.NegativeAction
 import com.codingwithmitch.food2forkcompose.presentation.components.PositiveAction
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
 import com.codingwithmitch.food2forkcompose.util.TAG
@@ -61,15 +60,32 @@ constructor(
   var recipeListScrollPosition = 0
 
   // Queue for "First-In-First-Out" behavior
-  val messageStack: MutableState<Queue<GenericDialogInfo>> = mutableStateOf(LinkedList())
+  val messageQueue: MutableState<Queue<GenericDialogInfo>> = mutableStateOf(LinkedList())
 
-  fun removeOldestMessage(){
-    if (messageStack.value.isNotEmpty()) {
-      val update = messageStack.value
+  fun removeHeadMessage(){
+    if (messageQueue.value.isNotEmpty()) {
+      val update = messageQueue.value
       update.remove() // remove first (oldest message)
-      messageStack.value = ArrayDeque() // force recompose (bug?)
-      messageStack.value = update
+      messageQueue.value = ArrayDeque() // force recompose (bug?)
+      messageQueue.value = update
     }
+  }
+
+  fun appendErrorMessage(title: String, description: String){
+    messageQueue.value.offer(
+      GenericDialogInfo.Builder(
+        title = title,
+        onDismiss = {removeHeadMessage()}
+      )
+        .description(description)
+        .positive(
+          PositiveAction(
+            positiveBtnTxt = "Ok",
+            onPositiveAction = { removeHeadMessage() },
+          )
+        )
+        .build()
+    )
   }
 
   init {
@@ -125,13 +141,13 @@ constructor(
 
       dataState.error?.let { error ->
         Log.e(TAG, "restoreState: ${error}")
-        // TODO("handle errors...")
+        appendErrorMessage("An Error Occurred", error)
       }
     }.launchIn(viewModelScope)
   }
 
   private fun newSearch() {
-    Log.d(TAG, "newSearch: query: ${query.value}")
+    Log.d(TAG, "newSearch: query: ${query.value}, page: ${page.value}")
     // New search. Reset the state
     resetSearchState()
 
@@ -144,54 +160,7 @@ constructor(
 
       dataState.error?.let { error ->
         Log.e(TAG, "newSearch: ${error}")
-        messageStack.value.offer(
-            GenericDialogInfo.Builder(
-                title = "An Error Occurred",
-                onDismiss = {removeOldestMessage()}
-            )
-                .description(error)
-                .positive(
-                    PositiveAction(
-                        positiveBtnTxt = "Ok",
-                        onPositiveAction = { removeOldestMessage() },
-                    )
-                )
-                .build()
-        )
-        messageStack.value.offer(
-            GenericDialogInfo.Builder(
-                title = "An Error Occurred",
-                onDismiss = {removeOldestMessage()}
-            )
-                .description("It's all fucked up Rick.")
-                .positive(
-                    PositiveAction(
-                        positiveBtnTxt = "Ok",
-                        onPositiveAction = {removeOldestMessage()},
-                    )
-                )
-                .build()
-        )
-        messageStack.value.offer(
-            GenericDialogInfo.Builder(
-                title = "An Error Occurred",
-                onDismiss = {removeOldestMessage()}
-            )
-                .description("Another One.")
-                .positive(
-                    PositiveAction(
-                        positiveBtnTxt = "Ok",
-                        onPositiveAction = {removeOldestMessage()},
-                    )
-                )
-                .negative(
-                    NegativeAction(
-                        negativeBtnTxt = "Cancel",
-                        onNegativeAction = {removeOldestMessage()}
-                    )
-                )
-                .build()
-        )
+        appendErrorMessage("An Error Occurred", error)
       }
     }.launchIn(viewModelScope)
 
@@ -212,7 +181,7 @@ constructor(
 
           dataState.error?.let { error ->
             Log.e(TAG, "nextPage: ${error}")
-            // TODO("handle errors...")
+            appendErrorMessage("An Error Occurred", error)
           }
         }.launchIn(viewModelScope)
       }

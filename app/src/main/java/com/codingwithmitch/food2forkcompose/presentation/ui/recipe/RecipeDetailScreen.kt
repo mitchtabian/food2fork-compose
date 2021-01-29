@@ -1,5 +1,6 @@
 package com.codingwithmitch.food2forkcompose.presentation.ui.recipe
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
@@ -12,32 +13,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import com.codingwithmitch.food2forkcompose.presentation.components.IMAGE_HEIGHT
+import com.codingwithmitch.food2forkcompose.presentation.components.InvalidRecipe
 import com.codingwithmitch.food2forkcompose.presentation.components.LoadingRecipeShimmer
 import com.codingwithmitch.food2forkcompose.presentation.components.RecipeView
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
+import com.codingwithmitch.food2forkcompose.util.TAG
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable
 fun RecipeDetailScreen(
+    navController: NavController,
     isDarkTheme: Boolean,
     recipeId: Int?,
     navBackStackEntry: NavBackStackEntry,
 ){
     if (recipeId == null){
-        TODO("show error 'invalid recipe id?...")
+        InvalidRecipe(onNavigateBack = { navController.popBackStack() })
     }else{
         val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
         val viewModel: RecipeDetailViewModel = viewModel("RecipeDetailViewModel", factory)
 
-        if(viewModel.recipe.value == null){
+        // fire a one-off event to get the recipe from api
+        val onLoad = viewModel.onLoad.value
+        if(!onLoad){
+            viewModel.onLoad.value = true
             viewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))
         }
 
         val loading = viewModel.loading.value
+
+        val messageQueue = viewModel.messageQueue.value
 
         val recipe = viewModel.recipe.value
 
@@ -47,7 +58,8 @@ fun RecipeDetailScreen(
             displayProgressBar = loading,
             scaffoldState = scaffoldState,
             darkTheme = isDarkTheme,
-            onDismiss = { },
+            messageQueue = messageQueue,
+            onDismiss = { viewModel.removeHeadMessage() },
         ) {
             Scaffold(
                 scaffoldState = scaffoldState,
@@ -58,24 +70,32 @@ fun RecipeDetailScreen(
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    if (loading && recipe == null) LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
-                    else recipe?.let {
-                        if (it.id == 1) { // force an error to demo snackbar
-                            viewModel.snackbarController.getScope().launch {
-                                viewModel.snackbarController.showSnackbar(
-                                    scaffoldState = scaffoldState,
-                                    message = "An error occurred with this recipe",
-                                    actionLabel = "Ok"
+                    if (loading && recipe == null) {
+                        LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
+                    }
+                    else if(!loading && recipe == null && onLoad){
+                        InvalidRecipe(onNavigateBack = {navController.popBackStack()})
+                    }
+                    else {
+                        recipe?.let {
+                            if (it.id == 1) { // force an error to demo snackbar
+                                viewModel.snackbarController.getScope().launch {
+                                    viewModel.snackbarController.showSnackbar(
+                                        scaffoldState = scaffoldState,
+                                        message = "An error occurred with this recipe",
+                                        actionLabel = "Ok"
+                                    )
+                                }
+                            } else {
+                                RecipeView(
+                                    recipe = it,
                                 )
                             }
-                        } else {
-                            RecipeView(
-                                recipe = it,
-                            )
                         }
                     }
                 }
             }
         }
+
     }
 }
