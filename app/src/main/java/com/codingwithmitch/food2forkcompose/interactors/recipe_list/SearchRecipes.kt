@@ -30,7 +30,10 @@ class SearchRecipes(
       // just to show pagination, api is fast
       delay(1000)
 
-//      throw Exception("Search FAILED!")
+        // force error for testing
+      if (query == "error") {
+          throw Exception("Search FAILED!")
+      }
 
       // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
       val recipes = getRecipesFromNetwork(
@@ -65,7 +68,11 @@ class SearchRecipes(
     }
   }
 
-  private suspend fun getRecipesFromNetwork(token: String, page: Int, query: String): List<Recipe> {
+  private suspend fun getRecipesFromNetwork(
+      token: String,
+      page: Int,
+      query: String
+  ): List<Recipe> {
     return dtoMapper.toDomainList(
         recipeService.search(
             token = token,

@@ -12,6 +12,7 @@ import com.codingwithmitch.food2forkcompose.presentation.components.CircularInde
 import com.codingwithmitch.food2forkcompose.presentation.components.DefaultSnackbar
 import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialog
 import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialogInfo
+import java.util.*
 
 private val LightThemeColors = lightColors(
     primary = Blue600,
@@ -47,7 +48,7 @@ fun AppTheme(
     darkTheme: Boolean,
     displayProgressBar: Boolean,
     scaffoldState: ScaffoldState,
-    messageStack: MutableList<GenericDialogInfo>? = null,
+    messageStack: Deque<GenericDialogInfo>? = null,
     onDismiss: () -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -80,11 +81,11 @@ fun AppTheme(
 
 @Composable
 fun ProcessMessageStack(
-    messageStack: MutableList<GenericDialogInfo>?,
+    messageStack: Deque<GenericDialogInfo>?,
     onDismiss: () -> Unit,
 ){
   if (messageStack?.isNotEmpty() == true) {
-    val dialogInfo = messageStack.get(0)
+    val dialogInfo = messageStack.last
     GenericDialog(
         onDismiss = onDismiss,
         title = dialogInfo.title,

@@ -39,7 +39,7 @@ fun RecipeListScreen(
 
     val page = viewModel.page.value
 
-    val messageStack = viewModel.messageStack
+    val messageStack = viewModel.messageStack.value
 
     val scaffoldState = rememberScaffoldState()
 
@@ -48,7 +48,7 @@ fun RecipeListScreen(
         scaffoldState = scaffoldState,
         darkTheme = isDarkTheme,
         messageStack = messageStack,
-        onDismiss = viewModel::removeBottomMessage,
+        onDismiss = viewModel::removeOldestMessage,
     ) {
         Scaffold(
             topBar = {

@@ -3,9 +3,7 @@ package com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list
 import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +20,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -61,11 +60,15 @@ constructor(
 
   var recipeListScrollPosition = 0
 
-  val messageStack: SnapshotStateList<GenericDialogInfo> = mutableStateListOf()
+  // Deque for "First-In-First-Out" behavior (Deque = double-ended queue)
+  val messageStack: MutableState<Deque<GenericDialogInfo>> = mutableStateOf(ArrayDeque())
 
-  fun removeBottomMessage(){
-    if (messageStack.isNotEmpty()) {
-      messageStack.removeAt(0)
+  fun removeOldestMessage(){
+    if (messageStack.value.isNotEmpty()) {
+      val update = messageStack.value
+      update.pollLast() // remove last (oldest message)
+      messageStack.value = ArrayDeque() // force recompose (bug?)
+      messageStack.value = update
     }
   }
 
@@ -141,50 +144,50 @@ constructor(
 
       dataState.error?.let { error ->
         Log.e(TAG, "newSearch: ${error}")
-        messageStack.add(
+        messageStack.value.push(
             GenericDialogInfo.Builder(
                 title = "An Error Occurred",
-                onDismiss = {removeBottomMessage()}
+                onDismiss = {removeOldestMessage()}
             )
                 .description(error)
                 .positive(
                     PositiveAction(
                         positiveBtnTxt = "Ok",
-                        onPositiveAction = { removeBottomMessage() },
+                        onPositiveAction = { removeOldestMessage() },
                     )
                 )
                 .build()
         )
-        messageStack.add(
+        messageStack.value.push(
             GenericDialogInfo.Builder(
                 title = "An Error Occurred",
-                onDismiss = {removeBottomMessage()}
+                onDismiss = {removeOldestMessage()}
             )
                 .description("It's all fucked up Rick.")
                 .positive(
                     PositiveAction(
                         positiveBtnTxt = "Ok",
-                        onPositiveAction = {removeBottomMessage()},
+                        onPositiveAction = {removeOldestMessage()},
                     )
                 )
                 .build()
         )
-        messageStack.add(
+        messageStack.value.push(
             GenericDialogInfo.Builder(
                 title = "An Error Occurred",
-                onDismiss = {removeBottomMessage()}
+                onDismiss = {removeOldestMessage()}
             )
                 .description("Another One.")
                 .positive(
                     PositiveAction(
                         positiveBtnTxt = "Ok",
-                        onPositiveAction = {removeBottomMessage()},
+                        onPositiveAction = {removeOldestMessage()},
                     )
                 )
                 .negative(
                     NegativeAction(
                         negativeBtnTxt = "Cancel",
-                        onNegativeAction = {removeBottomMessage()}
+                        onNegativeAction = {removeOldestMessage()}
                     )
                 )
                 .build()
