@@ -6,10 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.ui.platform.setContent
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.*
 import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen.RecipeDetail
 import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen.RecipeList
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeDetailScreen
@@ -30,7 +27,7 @@ class MainActivity : AppCompatActivity() {
                 NavHost(navController = navController, startDestination = RecipeList.route) {
                     composable(route = RecipeList.route) { navBackStackEntry ->
                         RecipeListScreen(
-                            navController = navController,
+                            onNavigateToRecipeDetailScreen = { navController.navigate(it) },
                             isDarkTheme = (application as BaseApplication).isDark.value,
                             onToggleTheme = (application as BaseApplication)::toggleLightTheme,
                             navBackStackEntry = navBackStackEntry,
@@ -43,10 +40,10 @@ class MainActivity : AppCompatActivity() {
                         })
                     ) { navBackStackEntry ->
                         RecipeDetailScreen(
-                            navController = navController,
                             isDarkTheme = (application as BaseApplication).isDark.value,
                             recipeId = navBackStackEntry.arguments?.getInt("recipeId"),
                             navBackStackEntry = navBackStackEntry,
+                            onNavigateBack = navController::popBackStack
                         )
                     }
                 }

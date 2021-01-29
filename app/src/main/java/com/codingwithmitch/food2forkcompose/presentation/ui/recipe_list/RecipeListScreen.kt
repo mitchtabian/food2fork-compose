@@ -8,7 +8,6 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import com.codingwithmitch.food2forkcompose.presentation.components.RecipeList
 import com.codingwithmitch.food2forkcompose.presentation.components.SearchAppBar
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
@@ -19,10 +18,10 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 @Composable
 fun RecipeListScreen(
-    navController: NavController,
     isDarkTheme: Boolean,
     onToggleTheme: () -> Unit,
     navBackStackEntry: NavBackStackEntry,
+    onNavigateToRecipeDetailScreen: (String) -> Unit,
 ){
     val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
     val viewModel: RecipeListViewModel = viewModel("RecipeListViewModel", factory)
@@ -89,7 +88,7 @@ fun RecipeListScreen(
                 onChangeScrollPosition = viewModel::onChangeRecipeScrollPosition,
                 page = page,
                 onTriggerNextPage = { viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent) },
-                navController = navController,
+                onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen
             )
         }
     }

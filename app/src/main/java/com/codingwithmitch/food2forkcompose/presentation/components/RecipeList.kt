@@ -8,8 +8,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.PAGE_SIZE
@@ -24,7 +22,7 @@ fun RecipeList(
     onChangeScrollPosition: (Int) -> Unit,
     page: Int,
     onTriggerNextPage: () -> Unit,
-    navController: NavController,
+    onNavigateToRecipeDetailScreen: (String) -> Unit,
 ){
     Box(modifier = Modifier
         .background(color = MaterialTheme.colors.surface)
@@ -48,7 +46,7 @@ fun RecipeList(
                         recipe = recipe,
                         onClick = {
                             val route = Screen.RecipeDetail.route + "/${recipe.id}"
-                            navController.navigate(route = route)
+                            onNavigateToRecipeDetailScreen(route)
                         }
                     )
                 }

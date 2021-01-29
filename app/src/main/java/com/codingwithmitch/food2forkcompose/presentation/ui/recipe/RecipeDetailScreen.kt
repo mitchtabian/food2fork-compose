@@ -1,6 +1,5 @@
 package com.codingwithmitch.food2forkcompose.presentation.ui.recipe
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
@@ -13,13 +12,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import com.codingwithmitch.food2forkcompose.presentation.components.IMAGE_HEIGHT
 import com.codingwithmitch.food2forkcompose.presentation.components.InvalidRecipe
 import com.codingwithmitch.food2forkcompose.presentation.components.LoadingRecipeShimmer
 import com.codingwithmitch.food2forkcompose.presentation.components.RecipeView
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
-import com.codingwithmitch.food2forkcompose.util.TAG
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
@@ -28,13 +25,13 @@ import kotlinx.coroutines.launch
 @ExperimentalCoroutinesApi
 @Composable
 fun RecipeDetailScreen(
-    navController: NavController,
     isDarkTheme: Boolean,
     recipeId: Int?,
     navBackStackEntry: NavBackStackEntry,
+    onNavigateBack: () -> Unit,
 ){
     if (recipeId == null){
-        InvalidRecipe(onNavigateBack = { navController.popBackStack() })
+        InvalidRecipe(onNavigateBack = { onNavigateBack()})
     }else{
         val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
         val viewModel: RecipeDetailViewModel = viewModel("RecipeDetailViewModel", factory)
@@ -74,7 +71,7 @@ fun RecipeDetailScreen(
                         LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
                     }
                     else if(!loading && recipe == null && onLoad){
-                        InvalidRecipe(onNavigateBack = {navController.popBackStack()})
+                        InvalidRecipe(onNavigateBack = {onNavigateBack()})
                     }
                     else {
                         recipe?.let {
