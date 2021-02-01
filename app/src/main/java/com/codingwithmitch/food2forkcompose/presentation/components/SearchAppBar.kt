@@ -2,6 +2,9 @@ package com.codingwithmitch.food2forkcompose.presentation.components
 
 import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -19,95 +22,88 @@ import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.FoodCate
 
 @Composable
 fun SearchAppBar(
-    query: String,
-    onQueryChanged: (String) -> Unit,
-    onExecuteSearch: () -> Unit,
-    categories: List<FoodCategory>,
-    selectedCategory: FoodCategory?,
-    onSelectedCategoryChanged: (String) -> Unit,
-    scrollPosition: Float,
-    onChangeScrollPosition: (Float) -> Unit,
-    onToggleTheme: () -> Unit,
-){
-    Surface(
+  query: String,
+  onQueryChanged: (String) -> Unit,
+  onExecuteSearch: () -> Unit,
+  categories: List<FoodCategory>,
+  selectedCategory: FoodCategory?,
+  onSelectedCategoryChanged: (String) -> Unit,
+  scrollPosition: Float,
+  onChangeScrollPosition: (Float) -> Unit,
+  onToggleTheme: () -> Unit,
+) {
+  Surface(
+    modifier = Modifier
+      .fillMaxWidth(),
+    color = MaterialTheme.colors.secondary,
+    elevation = 8.dp,
+  ) {
+    Column {
+      Row(modifier = Modifier.fillMaxWidth()) {
+        TextField(
+          modifier = Modifier
+            .fillMaxWidth(.9f)
+            .padding(8.dp),
+          value = query,
+          onValueChange = {
+            onQueryChanged(it)
+          },
+          label = {
+            Text(text = "Search")
+          },
+          keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done,
+          ),
+          leadingIcon = {
+            Icon(Icons.Filled.Search, contentDescription = "Search Icon")
+          },
+          onImeActionPerformed = { action, softKeyboardController ->
+            if (action == ImeAction.Done) {
+              onExecuteSearch()
+              softKeyboardController?.hideSoftwareKeyboard()
+            }
+          },
+          textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
+          backgroundColor = MaterialTheme.colors.surface
+        )
+        ConstraintLayout(
+          modifier = Modifier.align(Alignment.CenterVertically)
+        ) {
+          val (menu) = createRefs()
+          IconButton(
             modifier = Modifier
-                    .fillMaxWidth()
-            ,
-            color = MaterialTheme.colors.secondary,
-            elevation = 8.dp,
-    ){
-        Column{
-            Row(modifier = Modifier.fillMaxWidth()){
-                TextField(
-                        modifier = Modifier
-                                .fillMaxWidth(.9f)
-                                .padding(8.dp)
-                        ,
-                        value = query,
-                        onValueChange = {
-                            onQueryChanged(it)
-                        },
-                        label = {
-                            Text(text = "Search")
-                        },
-                        keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Done,
-                        ),
-                        leadingIcon = {
-                            Icon(Icons.Filled.Search)
-                        },
-                        onImeActionPerformed = { action, softKeyboardController ->
-                            if (action == ImeAction.Done) {
-                                onExecuteSearch()
-                                softKeyboardController?.hideSoftwareKeyboard()
-                            }
-                        },
-                        textStyle = TextStyle(color = MaterialTheme.colors.onSurface),
-                        backgroundColor = MaterialTheme.colors.surface
-                )
-                ConstraintLayout(
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                ) {
-                    val (menu) = createRefs()
-                    IconButton(
-                        modifier = Modifier
-                            .constrainAs(menu) {
-                                end.linkTo(parent.end)
-                                linkTo(top = parent.top, bottom = parent.bottom)
-                            },
-                        onClick = onToggleTheme
-                        ,
-                    ){
-                        Icon(Icons.Filled.MoreVert)
-                    }
-                }
-            }
-            val scrollState = rememberScrollState()
-            ScrollableRow(
-                    modifier = Modifier
-                            .padding(start = 8.dp, bottom = 8.dp)
-                    ,
-                    scrollState = scrollState,
-            ) {
-
-                // restore scroll position after rotation
-                scrollState.scrollTo(scrollPosition)
-
-                for(category in categories){
-                    FoodCategoryChip(
-                            category = category.value,
-                            isSelected = selectedCategory == category,
-                            onSelectedCategoryChanged = {
-                                onChangeScrollPosition(scrollState.value)
-                                onSelectedCategoryChanged(it)
-                            },
-                            onExecuteSearch = {
-                                onExecuteSearch()
-                            },
-                    )
-                }
-            }
+              .constrainAs(menu) {
+                end.linkTo(parent.end)
+                linkTo(top = parent.top, bottom = parent.bottom)
+              },
+            onClick = onToggleTheme,
+          ) {
+            Icon(Icons.Filled.MoreVert, contentDescription = "Toggle Dark/Light Theme")
+          }
         }
+      }
+      val scrollState = rememberLazyListState()
+      LazyRow(
+        modifier = Modifier
+          .padding(start = 8.dp, bottom = 8.dp),
+        state = scrollState,
+      ) {
+
+        items(categories){
+          FoodCategoryChip(
+            category = it.value,
+            isSelected = selectedCategory == it,
+            onSelectedCategoryChanged = {
+              onChangeScrollPosition(scrollState.layoutInfo.viewportEndOffset.toFloat())
+              onSelectedCategoryChanged(it)
+            },
+            onExecuteSearch = {
+              onExecuteSearch()
+            },
+          )
+        }
+      }
     }
+  }
 }

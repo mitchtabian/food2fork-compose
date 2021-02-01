@@ -19,38 +19,37 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val navController = rememberNavController()
-            Scaffold {
-                NavHost(navController = navController, startDestination = RecipeList.route) {
-                    composable(route = RecipeList.route) { navBackStackEntry ->
-                        RecipeListScreen(
-                            onNavigateToRecipeDetailScreen = { navController.navigate(it) },
-                            isDarkTheme = (application as BaseApplication).isDark.value,
-                            onToggleTheme = (application as BaseApplication)::toggleLightTheme,
-                            navBackStackEntry = navBackStackEntry,
-                        )
-                    }
-                    composable(
-                        route = RecipeDetail.route + "/{recipeId}",
-                        arguments = listOf(navArgument("recipeId") {
-                            type = NavType.IntType
-                        })
-                    ) { navBackStackEntry ->
-                        RecipeDetailScreen(
-                            isDarkTheme = (application as BaseApplication).isDark.value,
-                            recipeId = navBackStackEntry.arguments?.getInt("recipeId"),
-                            navBackStackEntry = navBackStackEntry,
-                            onNavigateBack = navController::popBackStack
-                        )
-                    }
-                }
-            }
-
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContent {
+      val navController = rememberNavController()
+      Scaffold {
+        NavHost(navController = navController, startDestination = RecipeList.route) {
+          composable(route = RecipeList.route) { navBackStackEntry ->
+            RecipeListScreen(
+              onNavigateToRecipeDetailScreen = { navController.navigate(it) },
+              isDarkTheme = (application as BaseApplication).isDark.value,
+              onToggleTheme = (application as BaseApplication)::toggleLightTheme,
+              navBackStackEntry = navBackStackEntry,
+            )
+          }
+          composable(
+            route = RecipeDetail.route + "/{recipeId}",
+            arguments = listOf(navArgument("recipeId") {
+              type = NavType.IntType
+            })
+          ) { navBackStackEntry ->
+            RecipeDetailScreen(
+              isDarkTheme = (application as BaseApplication).isDark.value,
+              recipeId = navBackStackEntry.arguments?.getInt("recipeId"),
+              navBackStackEntry = navBackStackEntry,
+              onNavigateBack = navController::popBackStack
+            )
+          }
         }
+      }
     }
+  }
 }
 
 

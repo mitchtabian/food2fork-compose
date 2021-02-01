@@ -29,6 +29,7 @@ fun RecipeView(
         image?.let { img ->
             Image(
                 bitmap = img.asImageBitmap(),
+                contentDescription = "Recipe Featured Image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .preferredHeight(IMAGE_HEIGHT.dp)

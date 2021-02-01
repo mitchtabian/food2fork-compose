@@ -60,7 +60,7 @@ fun loadPicture(drawableId: Int): MutableState<Bitmap?> {
     val bitmapState: MutableState<Bitmap?> = mutableStateOf(null)
 
     // get network image
-    Glide.with(ContextAmbient.current)
+    Glide.with(AmbientContext.current)
             .asBitmap()
             .load(drawableId)
             .into(object : CustomTarget<Bitmap>() {
