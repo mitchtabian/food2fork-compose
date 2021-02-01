@@ -1,11 +1,9 @@
 package com.codingwithmitch.food2forkcompose.presentation.components
 
-import androidx.compose.foundation.ScrollableRow
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -28,8 +26,6 @@ fun SearchAppBar(
   categories: List<FoodCategory>,
   selectedCategory: FoodCategory?,
   onSelectedCategoryChanged: (String) -> Unit,
-  scrollPosition: Float,
-  onChangeScrollPosition: (Float) -> Unit,
   onToggleTheme: () -> Unit,
 ) {
   Surface(
@@ -95,7 +91,6 @@ fun SearchAppBar(
             category = it.value,
             isSelected = selectedCategory == it,
             onSelectedCategoryChanged = {
-              onChangeScrollPosition(scrollState.layoutInfo.viewportEndOffset.toFloat())
               onSelectedCategoryChanged(it)
             },
             onExecuteSearch = {

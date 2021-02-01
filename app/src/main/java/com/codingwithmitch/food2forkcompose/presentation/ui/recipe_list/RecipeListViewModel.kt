@@ -55,8 +55,6 @@ constructor(
 
   val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
-  var categoryScrollPosition: Float = 0f
-
   var recipeListScrollPosition = 0
 
   // Queue for "First-In-First-Out" behavior
@@ -230,11 +228,6 @@ constructor(
     val newCategory = getFoodCategory(category)
     setSelectedCategory(newCategory)
     onQueryChanged(category)
-  }
-
-
-  fun onChangeCategoryScrollPosition(position: Float) {
-    categoryScrollPosition = position
   }
 
   private fun setListScrollPosition(position: Int) {

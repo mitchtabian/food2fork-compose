@@ -32,8 +32,6 @@ fun RecipeListScreen(
 
     val selectedCategory = viewModel.selectedCategory.value
 
-    val categoryScrollPosition = viewModel.categoryScrollPosition
-
     val loading = viewModel.loading.value
 
     val page = viewModel.page.value
@@ -70,8 +68,6 @@ fun RecipeListScreen(
                     categories = getAllFoodCategories(),
                     selectedCategory = selectedCategory,
                     onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                    scrollPosition = categoryScrollPosition,
-                    onChangeScrollPosition = viewModel::onChangeCategoryScrollPosition,
                     onToggleTheme = {
                         onToggleTheme()
                     }
