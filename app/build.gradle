@@ -45,6 +45,10 @@ android {
         def kotlin_compiler_extension_version = "1.0.0-alpha11"
         kotlinCompilerExtensionVersion kotlin_compiler_extension_version
     }
+    packagingOptions {
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+    }
 }
 
 dependencies {
@@ -108,6 +112,7 @@ dependencies {
     // Coroutines for room
     implementation "androidx.room:room-ktx:$room_version"
 
+    // TESTING
     def junit_jupiter_version = "5.7.0"
     testImplementation  "org.junit.jupiter:junit-jupiter-api:${junit_jupiter_version}"
     testImplementation "org.junit.jupiter:junit-jupiter-params:${junit_jupiter_version}"
@@ -120,6 +125,9 @@ dependencies {
     // Hilt Instrumentation testing
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt"
     kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt"
+
+    // compose testing
+    implementation "androidx.compose.ui:ui-test-junit4:$compose"
 }
 
 
