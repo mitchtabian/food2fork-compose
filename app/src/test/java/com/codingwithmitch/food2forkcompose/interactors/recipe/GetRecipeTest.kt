@@ -14,6 +14,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import retrofit2.Retrofit
@@ -143,6 +144,11 @@ class GetRecipeTest {
 
     // 'loading' should be false now
     assert(!recipeAsFlow[1].loading)
+  }
+
+  @AfterEach
+  fun tearDown() {
+    mockWebServer.shutdown()
   }
 }
 
