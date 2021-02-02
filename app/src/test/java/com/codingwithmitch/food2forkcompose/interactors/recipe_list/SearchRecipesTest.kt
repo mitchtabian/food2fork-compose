@@ -40,7 +40,7 @@ class SearchRecipesTest {
 
 
     @BeforeEach
-    fun setUp() {
+    fun setup() {
         mockWebServer = MockWebServer()
         mockWebServer.start()
         baseUrl = mockWebServer.url("/api/recipe/")
@@ -81,17 +81,20 @@ class SearchRecipesTest {
 
         val flowItems = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
 
+        // confirm the cache is no longer empty
+        assert(recipeDao.getAllRecipes(1, 30).isNotEmpty())
+
         // first emission should be `loading`
-        assert(flowItems.get(0).loading)
+        assert(flowItems[0].loading)
 
         // Second emission should be the list of recipes
-        val recipes = flowItems.get(1).data
+        val recipes = flowItems[1].data
         assert(recipes?.size?: 0 > 0)
 
         // confirm they are actually Recipe objects
-        assert(recipes?.get(0) is Recipe)
+        assert(recipes?.get(index = 0) is Recipe)
 
-        assert(!flowItems.get(1).loading) // loading should be false now
+        assert(!flowItems[1].loading) // loading should be false now
     }
 
     @AfterEach

@@ -121,6 +121,9 @@ dependencies {
     testImplementation "com.squareup.okhttp3:mockwebserver:$okhttp"
     testImplementation "com.squareup.okhttp3:okhttp:$okhttp"
 
+    // Hilt Instrumentation testing
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt"
+    kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt"
 }
 
 

@@ -12,7 +12,6 @@ class RecipeDaoFake(
     }
 
     override suspend fun insertRecipes(recipes: List<RecipeEntity>): LongArray {
-        println("insertRecipes")
         appDatabaseFake.recipes.addAll(recipes)
         return longArrayOf(1) // return success
     }
@@ -52,6 +51,10 @@ class RecipeDaoFake(
         page: Int,
         pageSize: Int
     ): List<RecipeEntity> {
+        return appDatabaseFake.recipes // return the entire list for simplicity
+    }
+
+    override suspend fun restoreAllRecipes(page: Int, pageSize: Int): List<RecipeEntity> {
         return appDatabaseFake.recipes // return the entire list for simplicity
     }
 }
