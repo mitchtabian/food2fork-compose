@@ -1,11 +1,10 @@
 package com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list
 
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import androidx.navigation.NavBackStackEntry
+import com.codingwithmitch.food2forkcompose.presentation.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
@@ -15,17 +14,15 @@ import org.junit.Test
 class RecipeScreenTest {
 
   @get:Rule
-  val composeTestRule = createComposeRule()
+  val composeTestRule = createAndroidComposeRule<MainActivity>()
 
   @Test
   fun SomeTest(){
     composeTestRule.setContent {
-      RecipeListScreen(
-        isDarkTheme = false,
-        onToggleTheme = {  },
-        navBackStackEntry = ,
-        onNavigateToRecipeDetailScreen = {  })
+
     }
+
+    composeTestRule.onNodeWithText("Search").assertIsDisplayed()
 
 
   }

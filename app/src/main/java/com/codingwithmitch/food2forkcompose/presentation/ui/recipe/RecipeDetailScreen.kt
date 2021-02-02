@@ -27,15 +27,12 @@ import kotlinx.coroutines.launch
 fun RecipeDetailScreen(
     isDarkTheme: Boolean,
     recipeId: Int?,
-    navBackStackEntry: NavBackStackEntry,
     onNavigateBack: () -> Unit,
+    viewModel: RecipeDetailViewModel,
 ){
     if (recipeId == null){
         InvalidRecipe(onNavigateBack = { onNavigateBack()})
     }else{
-        val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
-        val viewModel: RecipeDetailViewModel = viewModel("RecipeDetailViewModel", factory)
-
         // fire a one-off event to get the recipe from api
         val onLoad = viewModel.onLoad.value
         if(!onLoad){
