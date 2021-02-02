@@ -10,7 +10,6 @@ import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 
 /**
  * Retrieve a recipe from the cache given it's unique id.
