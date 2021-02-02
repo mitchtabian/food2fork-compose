@@ -32,7 +32,7 @@ class SearchRecipesTest {
     // system in test
     private lateinit var searchRecipes: SearchRecipes
 
-    // Constructor args to SearchRecipes
+    // Dependencies
     private lateinit var recipeService: RecipeService
     private lateinit var recipeDao: RecipeDaoFake
     private val dtoMapper = RecipeDtoMapper()

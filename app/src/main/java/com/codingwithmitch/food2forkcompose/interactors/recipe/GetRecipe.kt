@@ -44,12 +44,13 @@ class GetRecipe (
             }
             // if the recipe is null, it means it was not in the cache for some reason. So get from network.
             else{
+                // get recipe from network
+                val networkRecipe = getRecipeFromNetwork(token, recipeId) // dto -> domain
 
                 // insert into cache
                 recipeDao.insertRecipe(
-                    entityMapper.mapFromDomainModel( // domain -> entity
-                        getRecipeFromNetwork(token, recipeId) // dto -> domain
-                    )
+                    // map domain -> entity
+                    entityMapper.mapFromDomainModel(networkRecipe)
                 )
 
                 // get from cache
