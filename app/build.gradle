@@ -128,6 +128,9 @@ dependencies {
 
     // compose testing
     implementation "androidx.compose.ui:ui-test-junit4:$compose"
+
+    def datastore = "1.0.0-alpha06"
+    implementation "androidx.datastore:datastore-preferences:$datastore"
 }
 
 
