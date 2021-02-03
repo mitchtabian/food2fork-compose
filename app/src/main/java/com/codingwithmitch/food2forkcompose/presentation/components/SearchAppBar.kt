@@ -41,9 +41,7 @@ fun SearchAppBar(
             .fillMaxWidth(.9f)
             .padding(8.dp),
           value = query,
-          onValueChange = {
-            onQueryChanged(it)
-          },
+          onValueChange = onQueryChanged,
           label = {
             Text(text = "Search")
           },
@@ -85,17 +83,12 @@ fun SearchAppBar(
           .padding(start = 8.dp, bottom = 8.dp),
         state = scrollState,
       ) {
-
         items(categories){
           FoodCategoryChip(
             category = it.value,
             isSelected = selectedCategory == it,
-            onSelectedCategoryChanged = {
-              onSelectedCategoryChanged(it)
-            },
-            onExecuteSearch = {
-              onExecuteSearch()
-            },
+            onSelectedCategoryChanged = onSelectedCategoryChanged,
+            onExecuteSearch = onExecuteSearch,
           )
         }
       }

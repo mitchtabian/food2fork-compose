@@ -197,7 +197,9 @@ constructor(
     recipes.value = listOf()
     setPage(1)
     setListScrollPosition(0)
-    if (selectedCategory.value?.value != query.value) clearSelectedCategory()
+    if (selectedCategory.value?.value != query.value) {
+      clearSelectedCategory()
+    }
   }
 
   /**
@@ -217,6 +219,7 @@ constructor(
    * Keep track of what the user has searched
    */
   fun onQueryChanged(query: String) {
+    Log.d(TAG, "onQueryChanged: ${query}")
     setQuery(query)
   }
 

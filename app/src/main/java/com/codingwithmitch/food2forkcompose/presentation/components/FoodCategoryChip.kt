@@ -1,8 +1,8 @@
 package com.codingwithmitch.food2forkcompose.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -25,13 +25,10 @@ fun FoodCategoryChip(
         color = if(isSelected) Color.LightGray else MaterialTheme.colors.primary
     ) {
         Row(modifier = Modifier
-            .toggleable(
-                value = isSelected,
-                onValueChange = {
-                    onSelectedCategoryChanged(category)
-                    onExecuteSearch()
-                }
-            )
+            .clickable {
+                onSelectedCategoryChanged(category)
+                onExecuteSearch()
+            }
         ) {
             Text(
                 text = category,

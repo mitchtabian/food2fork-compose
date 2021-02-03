@@ -73,9 +73,7 @@ fun RecipeListScreen(
                     categories = getAllFoodCategories(),
                     selectedCategory = selectedCategory,
                     onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                    onToggleTheme = {
-                        onToggleTheme()
-                    }
+                    onToggleTheme = onToggleTheme
                 )
             },
             scaffoldState = scaffoldState,

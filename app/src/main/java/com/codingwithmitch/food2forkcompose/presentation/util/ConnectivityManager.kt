@@ -7,7 +7,9 @@ import android.net.Network
 import android.net.NetworkRequest
 import androidx.compose.runtime.mutableStateOf
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ConnectivityManager
 @Inject
 constructor(
@@ -24,7 +26,6 @@ constructor(
     cm.registerNetworkCallback(
       builder.build(),
       object : ConnectivityManager.NetworkCallback() {
-
         override fun onAvailable(network: Network) {
           isNetworkAvailable.value = true
         }

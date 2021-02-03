@@ -7,11 +7,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.navigation.NavBackStackEntry
 import com.codingwithmitch.food2forkcompose.presentation.components.IMAGE_HEIGHT
 import com.codingwithmitch.food2forkcompose.presentation.components.InvalidRecipe
 import com.codingwithmitch.food2forkcompose.presentation.components.LoadingRecipeShimmer
@@ -32,7 +28,7 @@ fun RecipeDetailScreen(
     viewModel: RecipeDetailViewModel,
 ){
     if (recipeId == null){
-        InvalidRecipe(onNavigateBack = { onNavigateBack()})
+        InvalidRecipe(onNavigateBack = onNavigateBack)
     }else{
         // fire a one-off event to get the recipe from api
         val onLoad = viewModel.onLoad.value
@@ -55,7 +51,7 @@ fun RecipeDetailScreen(
             darkTheme = isDarkTheme,
             isNetworkAvailable = isNetworkAvailable,
             messageQueue = messageQueue,
-            onDismiss = { viewModel.removeHeadMessage() },
+            onDismiss = viewModel::removeHeadMessage,
         ) {
             Scaffold(
                 scaffoldState = scaffoldState,
