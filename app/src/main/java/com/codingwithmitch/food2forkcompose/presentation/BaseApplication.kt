@@ -28,6 +28,10 @@ class BaseApplication : Application(){
 
     override fun onCreate() {
         super.onCreate()
+        observeDataStore()
+    }
+
+    private fun observeDataStore(){
         dataStore.data.onEach { preferences ->
             preferences[DARK_THEME_KEY]?.let { isDarkTheme ->
                 isDark.value = isDarkTheme
@@ -43,6 +47,7 @@ class BaseApplication : Application(){
             }
         }
     }
+
 
 }
 

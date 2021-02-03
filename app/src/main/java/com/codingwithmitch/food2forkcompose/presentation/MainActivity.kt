@@ -28,6 +28,16 @@ class MainActivity : AppCompatActivity() {
   @Inject
   lateinit var connectivityManager: ConnectivityManager
 
+  override fun onStart() {
+    super.onStart()
+    connectivityManager.registerConnectionObserver(this)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    connectivityManager.unregisterConnectionObserver(this)
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
