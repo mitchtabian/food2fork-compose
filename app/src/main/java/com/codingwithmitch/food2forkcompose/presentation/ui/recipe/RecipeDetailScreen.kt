@@ -66,7 +66,7 @@ fun RecipeDetailScreen(
                         LoadingRecipeShimmer(imageHeight = IMAGE_HEIGHT.dp)
                     }
                     else if(!loading && recipe == null && onLoad){
-                        InvalidRecipe(onNavigateBack = {onNavigateBack()})
+                        InvalidRecipe(onNavigateBack = onNavigateBack)
                     }
                     else {
                         recipe?.let {

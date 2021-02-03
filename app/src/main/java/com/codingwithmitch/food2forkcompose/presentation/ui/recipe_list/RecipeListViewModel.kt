@@ -88,14 +88,12 @@ constructor(
 
   init {
     savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
-      Log.d(TAG, "restoring page: ${p}")
       setPage(p)
     }
     savedStateHandle.get<String>(STATE_KEY_QUERY)?.let { q ->
       setQuery(q)
     }
     savedStateHandle.get<Int>(STATE_KEY_LIST_POSITION)?.let { p ->
-      Log.d(TAG, "restoring scroll position: ${p}")
       setListScrollPosition(p)
     }
     savedStateHandle.get<FoodCategory>(STATE_KEY_SELECTED_CATEGORY)?.let { c ->
@@ -138,7 +136,6 @@ constructor(
       }
 
       dataState.error?.let { error ->
-        Log.e(TAG, "restoreState: ${error}")
         appendErrorMessage("An Error Occurred", error)
       }
     }.launchIn(viewModelScope)
@@ -219,7 +216,6 @@ constructor(
    * Keep track of what the user has searched
    */
   fun onQueryChanged(query: String) {
-    Log.d(TAG, "onQueryChanged: ${query}")
     setQuery(query)
   }
 
