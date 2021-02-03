@@ -7,6 +7,7 @@ import com.codingwithmitch.food2forkcompose.domain.data.DataState
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
+import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,6 +20,7 @@ class GetRecipe (
     private val entityMapper: RecipeEntityMapper,
     private val recipeService: RecipeService,
     private val recipeDtoMapper: RecipeDtoMapper,
+    private val connectivityManager: ConnectivityManager,
 ){
 
     fun execute(
@@ -43,14 +45,16 @@ class GetRecipe (
             }
             // if the recipe is null, it means it was not in the cache for some reason. So get from network.
             else{
-                // get recipe from network
-                val networkRecipe = getRecipeFromNetwork(token, recipeId) // dto -> domain
+                if(connectivityManager.isNetworkAvailable.value){
+                    // get recipe from network
+                    val networkRecipe = getRecipeFromNetwork(token, recipeId) // dto -> domain
 
-                // insert into cache
-                recipeDao.insertRecipe(
-                    // map domain -> entity
-                    entityMapper.mapFromDomainModel(networkRecipe)
-                )
+                    // insert into cache
+                    recipeDao.insertRecipe(
+                        // map domain -> entity
+                        entityMapper.mapFromDomainModel(networkRecipe)
+                    )
+                }
 
                 // get from cache
                 recipe = getRecipeFromCache(recipeId = recipeId)

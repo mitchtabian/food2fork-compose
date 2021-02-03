@@ -15,13 +15,18 @@ import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeDetailS
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeDetailViewModel
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListScreen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListViewModel
+import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+  @Inject
+  lateinit var connectivityManager: ConnectivityManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -32,8 +37,9 @@ class MainActivity : AppCompatActivity() {
           val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
           val viewModel: RecipeListViewModel = viewModel("RecipeListViewModel", factory)
           RecipeListScreen(
-            onNavigateToRecipeDetailScreen = navController::navigate,
             isDarkTheme = (application as BaseApplication).isDark.value,
+            isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
+            onNavigateToRecipeDetailScreen = navController::navigate,
             onToggleTheme = (application as BaseApplication)::toggleTheme,
             viewModel = viewModel,
           )
@@ -48,6 +54,7 @@ class MainActivity : AppCompatActivity() {
           val viewModel: RecipeDetailViewModel = viewModel("RecipeDetailViewModel", factory)
           RecipeDetailScreen(
             isDarkTheme = (application as BaseApplication).isDark.value,
+            isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
             recipeId = navBackStackEntry.arguments?.getInt("recipeId"),
             viewModel = viewModel,
             onNavigateBack = navController::popBackStack

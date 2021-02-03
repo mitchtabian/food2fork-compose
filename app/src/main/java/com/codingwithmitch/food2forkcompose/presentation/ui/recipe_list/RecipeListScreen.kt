@@ -25,6 +25,7 @@ import java.util.*
 @Composable
 fun RecipeListScreen(
     isDarkTheme: Boolean,
+    isNetworkAvailable: Boolean,
     onToggleTheme: () -> Unit,
     onNavigateToRecipeDetailScreen: (String) -> Unit,
     viewModel: RecipeListViewModel,
@@ -47,6 +48,7 @@ fun RecipeListScreen(
         displayProgressBar = loading,
         scaffoldState = scaffoldState,
         darkTheme = isDarkTheme,
+        isNetworkAvailable = isNetworkAvailable,
         messageQueue = messageQueue,
         onDismiss = viewModel::removeHeadMessage,
     ) {

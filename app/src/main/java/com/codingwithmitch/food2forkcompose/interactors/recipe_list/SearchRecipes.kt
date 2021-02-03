@@ -6,6 +6,7 @@ import com.codingwithmitch.food2forkcompose.domain.data.DataState
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
+import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
 import com.codingwithmitch.food2forkcompose.util.RECIPE_PAGINATION_PAGE_SIZE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ class SearchRecipes(
     private val recipeService: RecipeService,
     private val entityMapper: RecipeEntityMapper,
     private val dtoMapper: RecipeDtoMapper,
+    private val connectivityManager: ConnectivityManager,
 ) {
 
   fun execute(
@@ -23,7 +25,6 @@ class SearchRecipes(
       page: Int,
       query: String
   ): Flow<DataState<List<Recipe>>> = flow {
-
     try {
       emit(DataState.loading())
 
@@ -35,15 +36,18 @@ class SearchRecipes(
           throw Exception("Search FAILED!")
       }
 
-      // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
-      val recipes = getRecipesFromNetwork(
+      // if there is a network connection
+      if(connectivityManager.isNetworkAvailable.value){
+        // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
+        val recipes = getRecipesFromNetwork(
           token = token,
           page = page,
           query = query,
-      )
+        )
 
-      // insert into cache
-      recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
+        // insert into cache
+        recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
+      }
 
       // query the cache
       val cacheResult = if (query.isBlank()) {

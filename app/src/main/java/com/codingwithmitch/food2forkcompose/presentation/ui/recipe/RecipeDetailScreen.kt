@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun RecipeDetailScreen(
     isDarkTheme: Boolean,
+    isNetworkAvailable: Boolean,
     recipeId: Int?,
     onNavigateBack: () -> Unit,
     viewModel: RecipeDetailViewModel,
@@ -52,6 +53,7 @@ fun RecipeDetailScreen(
             displayProgressBar = loading,
             scaffoldState = scaffoldState,
             darkTheme = isDarkTheme,
+            isNetworkAvailable = isNetworkAvailable,
             messageQueue = messageQueue,
             onDismiss = { viewModel.removeHeadMessage() },
         ) {
