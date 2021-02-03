@@ -10,6 +10,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
 
+/**
+ * According to the docs, instrumentation testing will probably change a lot by
+ * the time compose reaches beta. So I'm going to omit them.
+ * https://developer.android.com/jetpack/compose/testing
+ */
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 class MainActivityTest {
@@ -21,6 +26,8 @@ class MainActivityTest {
   fun SimpleTest(){
     composeTestRule.onNodeWithText("Search").assertIsDisplayed()
   }
+
+
 }
 
 
