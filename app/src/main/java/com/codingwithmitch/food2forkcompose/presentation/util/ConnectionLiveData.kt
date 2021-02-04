@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 
 /**
- * Saved all available networks with an internet connection to a set (@validNetworks).
+ * Save all available networks with an internet connection to a set (@validNetworks).
  * As long as the size of the set > 0, this LiveData emits true.
  * MinSdk = 21.
  *
