@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 /**
  * Saved all available networks with an internet connection to a set (@validNetworks).
  * As long as the size of the set > 0, this LiveData emits true.
+ * MinSdk = 21.
  *
  * Inspired by:
  * https://github.com/AlexSheva-mason/Rick-Morty-Database/blob/master/app/src/main/java/com/shevaalex/android/rickmortydatabase/utils/networking/ConnectionLiveData.kt
@@ -43,6 +44,7 @@ class ConnectionLiveData(context: Context) : LiveData<Boolean>() {
 
     /*
       Called when a network is detected. If that network has internet, save it in the Set.
+      Source: https://developer.android.com/reference/android/net/ConnectivityManager.NetworkCallback#onAvailable(android.net.Network)
      */
     override fun onAvailable(network: Network) {
       Log.d(TAG, "onAvailable: ${network}")
