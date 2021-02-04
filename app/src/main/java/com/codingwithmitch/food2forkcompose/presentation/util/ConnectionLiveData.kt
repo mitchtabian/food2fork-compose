@@ -36,13 +36,17 @@ class ConnectionLiveData(private val context: Context) : LiveData<Boolean>() {
        be followed by a call to onCapabilitiesChanged.
        On versions below Build.VERSION_CODES.O when app is started with internet connection
        nothing apart from onAvailable() is being called, thus we need to pass postValue(true)
-       here (although in some cases it could be false positive)
+       here (although in some cases it could be false positive but this should be rare).
+       Source: https://developer.android.com/reference/android/net/ConnectivityManager.NetworkCallback#onAvailable(android.net.Network)
        */
       if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
         postValue(true)
       }
     }
 
+    /**
+     * Called immediately after onAvailable
+     */
     override fun onCapabilitiesChanged(
       network: Network,
       networkCapabilities: NetworkCapabilities
@@ -52,6 +56,10 @@ class ConnectionLiveData(private val context: Context) : LiveData<Boolean>() {
       postValue(isInternet && isValidated)
     }
 
+    /*
+      Will only be invoked against the last network returned by onAvailable() when that network is lost and no other network satisfies the criteria of the request.
+      Source: https://developer.android.com/reference/android/net/ConnectivityManager.NetworkCallback#onLost(android.net.Network)
+     */
     override fun onLost(network: Network) {
       postValue(false)
     }
