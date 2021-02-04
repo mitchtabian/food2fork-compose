@@ -1,8 +1,6 @@
 package com.codingwithmitch.food2forkcompose.presentation.util
 
 import android.app.Application
-import android.net.NetworkRequest
-import android.net.NetworkSpecifier
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleOwner
 import javax.inject.Inject
