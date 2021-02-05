@@ -8,6 +8,13 @@ import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkRequest
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.codingwithmitch.food2forkcompose.interactors.app.DoesNetworkHaveInternet
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+val TAG = "C-Manager"
 
 /**
  * Save all available networks with an internet connection to a set (@validNetworks).
@@ -19,12 +26,12 @@ import androidx.lifecycle.LiveData
  */
 class ConnectionLiveData(context: Context) : LiveData<Boolean>() {
 
-  private val TAG = "C-Manager"
+
   private lateinit var networkCallback: ConnectivityManager.NetworkCallback
   private val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
   private val validNetworks: MutableSet<Network> = HashSet()
 
-  private fun checkValidNetworks(){
+  private fun checkValidNetworks() {
     postValue(validNetworks.size > 0)
   }
 
@@ -49,12 +56,21 @@ class ConnectionLiveData(context: Context) : LiveData<Boolean>() {
     override fun onAvailable(network: Network) {
       Log.d(TAG, "onAvailable: ${network}")
       val networkCapabilities = cm.getNetworkCapabilities(network)
-      val isInternet = networkCapabilities?.hasCapability(NET_CAPABILITY_INTERNET)
-      Log.d(TAG, "onAvailable: ${network}, $isInternet")
-      if(isInternet ==  true){
-        validNetworks.add(network)
+      val hasInternetCapability = networkCapabilities?.hasCapability(NET_CAPABILITY_INTERNET)
+      Log.d(TAG, "onAvailable: ${network}, $hasInternetCapability")
+      if (hasInternetCapability == true) {
+        // check if this network actually has internet
+        CoroutineScope(Dispatchers.IO).launch {
+          val hasInternet = DoesNetworkHaveInternet.execute()
+          if(hasInternet){
+            withContext(Dispatchers.Main){
+              Log.d(TAG, "onAvailable: adding network. ${network}")
+              validNetworks.add(network)
+              checkValidNetworks()
+            }
+          }
+        }
       }
-      checkValidNetworks()
     }
 
     /*
