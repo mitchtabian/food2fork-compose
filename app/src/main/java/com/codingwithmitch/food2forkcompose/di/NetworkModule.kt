@@ -1,24 +1,24 @@
 package com.codingwithmitch.food2forkcompose.di
 
-import com.codingwithmitch.food2forkcompose.network.RecipeService
+import com.codingwithmitch.food2fork.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.components.ApplicationComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ApplicationComponent::class)
 object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideNetworkRecipeMapper(): RecipeDtoMapper {
+    fun provideRecipeMapper(): RecipeDtoMapper {
         return RecipeDtoMapper()
     }
 
@@ -44,19 +44,3 @@ object NetworkModule {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

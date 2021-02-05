@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.PAGE_SIZE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -23,7 +22,7 @@ fun RecipeList(
     onChangeScrollPosition: (Int) -> Unit,
     page: Int,
     onTriggerNextPage: () -> Unit,
-    onNavigateToRecipeDetailScreen: (String) -> Unit,
+    onNavigateToRecipeDetailScreen: (Int) -> Unit,
 ){
     Box(modifier = Modifier
         .background(color = MaterialTheme.colors.surface)
@@ -45,9 +44,7 @@ fun RecipeList(
                     }
                     RecipeCard(
                         recipe = recipe,
-                        onClick = {
-                            val route = Screen.RecipeDetail.route + "/${recipe.id}"
-                            onNavigateToRecipeDetailScreen(route)
+                        onClick = { onNavigateToRecipeDetailScreen(recipe.id)
                         }
                     )
                 }
@@ -55,14 +52,6 @@ fun RecipeList(
         }
     }
 }
-
-
-
-
-
-
-
-
 
 
 

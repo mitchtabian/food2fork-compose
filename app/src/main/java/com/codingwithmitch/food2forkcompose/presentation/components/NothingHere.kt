@@ -12,21 +12,21 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NothingHere(){
-  Box(
-    modifier = Modifier.fillMaxSize()
-  ){
-    Column(modifier = Modifier.align(Alignment.Center)){
-      Text(
-        modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
-        text = "¯\\_(ツ)_/¯",
-        style = TextStyle(fontSize = TextUnit.Companion.Sp(55))
-      )
-      Text(
-        modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
-        text = "There's nothing here",
-        style = MaterialTheme.typography.h4
-      )
-    }
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ){
+        Column(modifier = Modifier.align(Alignment.Center)){
+            Text(
+                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
+                text = "¯\\_(ツ)_/¯",
+                style = TextStyle(fontSize = TextUnit.Companion.Sp(55))
+            )
+            Text(
+                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
+                text = "There's nothing here",
+                style = MaterialTheme.typography.h4
+            )
+        }
 
-  }
+    }
 }

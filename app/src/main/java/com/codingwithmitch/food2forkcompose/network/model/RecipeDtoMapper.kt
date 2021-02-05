@@ -1,8 +1,7 @@
 package com.codingwithmitch.food2forkcompose.network.model
 
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.util.DateUtils
-import com.codingwithmitch.food2forkcompose.util.DomainMapper
+import com.codingwithmitch.food2forkcompose.domain.util.DomainMapper
 
 
 class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
@@ -16,8 +15,8 @@ class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
             publisher = model.publisher,
             sourceUrl = model.sourceUrl,
             ingredients = model.ingredients,
-            dateAdded = DateUtils.longToDate(model.longDateAdded),
-            dateUpdated = DateUtils.longToDate(model.longDateUpdated),
+            dateAdded = model.dateAdded,
+            dateUpdated = model.dateUpdated,
         )
     }
 
@@ -30,8 +29,8 @@ class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
             publisher = domainModel.publisher,
             sourceUrl = domainModel.sourceUrl,
             ingredients = domainModel.ingredients,
-            longDateAdded = DateUtils.dateToLong(domainModel.dateAdded),
-            longDateUpdated = DateUtils.dateToLong(domainModel.dateUpdated),
+            dateAdded = domainModel.dateAdded,
+            dateUpdated = domainModel.dateUpdated,
         )
     }
 
@@ -45,20 +44,3 @@ class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

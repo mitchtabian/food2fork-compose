@@ -1,4 +1,4 @@
-package com.codingwithmitch.mvvmrecipeapp.presentation.components.util
+package com.codingwithmitch.food2forkcompose.presentation.components.util
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScaffoldState
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 class SnackbarController
 constructor(
-    private val scope: CoroutineScope
+        private val scope: CoroutineScope
 ){
 
     private var snackbarJob: Job? = null
@@ -29,15 +29,15 @@ constructor(
     fun getScope() = scope
 
     fun showSnackbar(
-        scaffoldState: ScaffoldState,
-        message: String,
-        actionLabel: String
+            scaffoldState: ScaffoldState,
+            message: String,
+            actionLabel: String
     ){
         if(snackbarJob == null){
             snackbarJob = scope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = actionLabel
+                        message = message,
+                        actionLabel = actionLabel
                 )
                 cancelActiveJob()
             }
@@ -46,8 +46,8 @@ constructor(
             cancelActiveJob()
             snackbarJob = scope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(
-                    message = message,
-                    actionLabel = actionLabel
+                        message = message,
+                        actionLabel = actionLabel
                 )
                 cancelActiveJob()
             }
@@ -61,20 +61,3 @@ constructor(
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
