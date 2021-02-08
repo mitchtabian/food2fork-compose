@@ -2,7 +2,7 @@ buildscript {
     ext.kotlin_version = "1.4.21-2"
     repositories {
         google()
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         def gradle = '7.0.0-alpha05'
@@ -18,10 +18,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        mavenCentral()
-        maven {
-            url "https://kotlin.bintray.com/kotlinx"
-        }
+        jcenter()
     }
 }
 
