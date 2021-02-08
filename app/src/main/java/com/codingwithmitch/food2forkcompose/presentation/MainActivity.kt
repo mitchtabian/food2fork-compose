@@ -7,9 +7,8 @@ import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
 import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeDetailScreen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeViewModel
@@ -34,15 +33,21 @@ class MainActivity : AppCompatActivity(){
           RecipeListScreen(
             isDarkTheme = (application as BaseApplication).isDark.value,
             onToggleTheme = (application as BaseApplication)::toggleLightTheme,
+            onNavigateToRecipeDetailScreen = navController::navigate,
             viewModel = viewModel,
           )
         }
-        composable(route = Screen.RecipeDetail.route) { navBackStackEntry ->
+        composable(
+          route = Screen.RecipeDetail.route + "/{recipeId}",
+          arguments = listOf(navArgument("recipeId") {
+            type = NavType.IntType
+          })
+        ) { navBackStackEntry ->
           val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
           val viewModel: RecipeViewModel = viewModel("RecipeDetailViewModel", factory)
           RecipeDetailScreen(
             isDarkTheme = (application as BaseApplication).isDark.value,
-            recipeId = 1, // hard code for now
+            recipeId = navBackStackEntry.arguments?.getInt("recipeId"),
             viewModel = viewModel,
           )
         }

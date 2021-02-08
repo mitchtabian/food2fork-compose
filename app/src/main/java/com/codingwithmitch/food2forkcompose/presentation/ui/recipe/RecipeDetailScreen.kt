@@ -16,7 +16,7 @@ fun RecipeDetailScreen(
   viewModel: RecipeViewModel,
 ){
   Log.d(TAG, "RecipeDetailScreen: ${viewModel}")
-  Text("RecipeDetail Screen: $recipeId")
+  Text("RecipeDetail Screen. RecipeId: $recipeId")
 
 
 //  val loading = viewModel.loading.value
