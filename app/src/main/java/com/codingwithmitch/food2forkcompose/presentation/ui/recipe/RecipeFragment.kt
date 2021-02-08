@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
@@ -17,14 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.codingwithmitch.food2forkcompose.presentation.BaseApplication
-import com.codingwithmitch.food2forkcompose.presentation.components.CircularIndeterminateProgressBar
-import com.codingwithmitch.food2forkcompose.presentation.components.DefaultSnackbar
 import com.codingwithmitch.food2forkcompose.presentation.components.LoadingRecipeShimmer
 import com.codingwithmitch.food2forkcompose.presentation.components.RecipeView
 import com.codingwithmitch.food2forkcompose.presentation.components.util.SnackbarController
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
-import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeEvent
-import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -96,14 +91,6 @@ class RecipeFragment: Fragment() {
                                     )
                                 }
                             }
-                            CircularIndeterminateProgressBar(isDisplayed = loading, verticalBias = 0.3f)
-                            DefaultSnackbar(
-                                snackbarHostState = scaffoldState.snackbarHostState,
-                                onDismiss = {
-                                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                                },
-                                modifier = Modifier.align(Alignment.BottomCenter)
-                            )
                         }
                     }
                 }
