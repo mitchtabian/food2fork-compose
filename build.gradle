@@ -4,10 +4,7 @@ buildscript {
     ext.kotlin_version = Versions.kotlin
     repositories {
         google()
-        mavenCentral()
-        maven {
-            url 'repo1.maven.org/maven2'
-        }
+        jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${Versions.gradle}"
@@ -22,10 +19,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        mavenCentral()
-        maven {
-            url "https://kotlin.bintray.com/kotlinx"
-        }
+        jcenter()
     }
 }
 
