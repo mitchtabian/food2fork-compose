@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity(){
           RecipeListScreen(
             isDarkTheme = (application as BaseApplication).isDark.value,
             onToggleTheme = (application as BaseApplication)::toggleLightTheme,
+            onNavigateToRecipeDetailScreen = navController::navigate,
             viewModel = viewModel,
           )
         }
