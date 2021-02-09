@@ -9,7 +9,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.codingwithmitch.mvvmrecipeapp"
+        applicationId "com.codingwithmitch.food2forkcompose"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
