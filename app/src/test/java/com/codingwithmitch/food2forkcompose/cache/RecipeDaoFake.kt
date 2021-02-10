@@ -4,7 +4,7 @@ import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntity
 
 class RecipeDaoFake(
     private val appDatabaseFake: AppDatabaseFake
-): RecipeDao {
+) {
 
     override suspend fun insertRecipe(recipe: RecipeEntity): Long {
         appDatabaseFake.recipes.add(recipe)
