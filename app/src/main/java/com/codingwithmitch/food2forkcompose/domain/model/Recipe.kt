@@ -1,5 +1,7 @@
 package com.codingwithmitch.food2forkcompose.domain.model
 
+import java.util.*
+
 /**
  * See Recipe example: https://food2fork.ca/
  */
@@ -8,9 +10,9 @@ data class Recipe (
     val title: String,
     val publisher: String,
     val featuredImage: String,
-    val rating: Int = 0,
+    val rating: Int,
     val sourceUrl: String,
     val ingredients: List<String> = listOf(),
-    val dateAdded: String,
-    val dateUpdated: String,
+    val dateAdded: Date,
+    val dateUpdated: Date,
 )
