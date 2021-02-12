@@ -1,4 +1,4 @@
-package com.codingwithmitch.food2forkcompose.interactors
+package com.codingwithmitch.food2forkcompose.interactors.recipe_list
 
 import com.codingwithmitch.food2fork.network.RecipeService
 import com.codingwithmitch.food2forkcompose.cache.RecipeDao
