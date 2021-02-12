@@ -7,10 +7,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
+import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
 import com.codingwithmitch.food2forkcompose.repository.RecipeRepository
 import com.codingwithmitch.food2forkcompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -27,6 +30,7 @@ class RecipeListViewModel
 @Inject
 constructor(
     private val repository: RecipeRepository,
+    private val searchRecipes: SearchRecipes,
     private @Named("auth_token") val token: String,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -109,21 +113,23 @@ constructor(
         }
     }
 
-    private suspend fun newSearch() {
-        loading.value = true
-
+    private fun newSearch() {
+        Log.d(TAG, "newSearch: query: ${query.value}, page: ${page.value}")
+        // New search. Reset the state
         resetSearchState()
 
-        delay(2000)
+        searchRecipes.execute(token = token, page = page.value, query = query.value).onEach { dataState ->
+            loading.value = dataState.loading
 
-        val result = repository.search(
-            token = token,
-            page = 1,
-            query = query.value
-        )
-        recipes.value = result
+            dataState.data?.let { list ->
+                recipes.value = list
+            }
 
-        loading.value = false
+            dataState.error?.let { error ->
+                Log.e(TAG, "newSearch: ${error}")
+                // TODO("Handle error")
+            }
+        }.launchIn(viewModelScope)
     }
 
     private suspend fun nextPage(){
