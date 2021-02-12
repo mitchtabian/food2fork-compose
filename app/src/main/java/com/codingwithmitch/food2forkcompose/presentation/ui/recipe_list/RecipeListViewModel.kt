@@ -132,22 +132,25 @@ constructor(
         }.launchIn(viewModelScope)
     }
 
-    private suspend fun nextPage(){
-        // prevent duplicate event due to recompose happening to quickly
-        if((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE) ){
-            loading.value = true
+    private fun nextPage() {
+        if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
             incrementPage()
             Log.d(TAG, "nextPage: triggered: ${page.value}")
 
-            // just to show pagination, api is fast
-            delay(1000)
+            if (page.value > 1) {
+                searchRecipes.execute(token = token, page = page.value, query = query.value).onEach { dataState ->
+                    loading.value = dataState.loading
 
-            if(page.value > 1){
-                val result = repository.search(token = token, page = page.value, query = query.value )
-                Log.d(TAG, "search: appending")
-                appendRecipes(result)
+                    dataState.data?.let { list ->
+                        appendRecipes(list)
+                    }
+
+                    dataState.error?.let { error ->
+                        Log.e(TAG, "nextPage: ${error}")
+                        // TODO("Handle error")
+                    }
+                }.launchIn(viewModelScope)
             }
-            loading.value = false
         }
     }
 
