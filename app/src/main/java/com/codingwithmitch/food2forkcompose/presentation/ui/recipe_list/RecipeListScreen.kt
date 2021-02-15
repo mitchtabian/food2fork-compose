@@ -19,9 +19,9 @@ fun RecipeListScreen(
   onToggleTheme: () -> Unit,
   onNavigateToRecipeDetailScreen: (String) -> Unit,
   viewModel: RecipeListViewModel,
-){
+) {
   Log.d(TAG, "RecipeListScreen: ${viewModel}")
-  
+
   val recipes = viewModel.recipes.value
 
   val query = viewModel.query.value
@@ -50,7 +50,7 @@ fun RecipeListScreen(
           categories = getAllFoodCategories(),
           selectedCategory = selectedCategory,
           onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-          onToggleTheme = {onToggleTheme()}
+          onToggleTheme = { onToggleTheme() }
         )
       },
       scaffoldState = scaffoldState,
@@ -64,7 +64,7 @@ fun RecipeListScreen(
         onChangeScrollPosition = viewModel::onChangeRecipeScrollPosition,
         page = page,
         onTriggerNextPage = { viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent) },
-        onNavigateToRecipeDetailScreen =  onNavigateToRecipeDetailScreen
+        onNavigateToRecipeDetailScreen = onNavigateToRecipeDetailScreen
       )
     }
   }
