@@ -20,12 +20,12 @@ class GetRecipe (
     private val entityMapper: RecipeEntityMapper,
     private val recipeService: RecipeService,
     private val recipeDtoMapper: RecipeDtoMapper,
-    private val connectivityManager: ConnectivityManager,
 ){
 
     fun execute(
         recipeId: Int,
         token: String,
+        isNetworkAvailable: Boolean,
     ): Flow<DataState<Recipe>> = flow {
         try {
             emit(DataState.loading())
@@ -45,7 +45,7 @@ class GetRecipe (
             }
             // if the recipe is null, it means it was not in the cache for some reason. So get from network.
             else{
-                if(connectivityManager.isNetworkAvailable.value){
+                if(isNetworkAvailable){
                     // get recipe from network
                     val networkRecipe = getRecipeFromNetwork(token, recipeId) // dto -> domain
 

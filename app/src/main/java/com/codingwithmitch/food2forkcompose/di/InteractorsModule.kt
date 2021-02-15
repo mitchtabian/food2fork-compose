@@ -7,7 +7,6 @@ import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecip
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
 import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
-import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,14 +24,12 @@ object InteractorsModule {
         recipeDao: RecipeDao,
         recipeEntityMapper: RecipeEntityMapper,
         recipeDtoMapper: RecipeDtoMapper,
-        connectivityManager: ConnectivityManager,
     ): SearchRecipes {
         return SearchRecipes(
             recipeService = recipeService,
             recipeDao = recipeDao,
             entityMapper = recipeEntityMapper,
             dtoMapper = recipeDtoMapper,
-            connectivityManager = connectivityManager,
         )
     }
 
@@ -55,14 +52,12 @@ object InteractorsModule {
         recipeEntityMapper: RecipeEntityMapper,
         recipeService: RecipeService,
         recipeDtoMapper: RecipeDtoMapper,
-        connectivityManager: ConnectivityManager,
     ): GetRecipe {
         return GetRecipe(
             recipeDao = recipeDao,
             entityMapper = recipeEntityMapper,
             recipeService = recipeService,
             recipeDtoMapper = recipeDtoMapper,
-            connectivityManager = connectivityManager,
         )
     }
 }

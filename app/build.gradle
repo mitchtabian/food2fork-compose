@@ -96,12 +96,11 @@ dependencies {
 
     // TESTING
     testImplementation UnitTest.jupiter_api
-    testImplementation UnitTest.jupiter_params
     testRuntimeOnly UnitTest.jupiter_engine
 
     // Mock web server
     testImplementation UnitTest.mock_web_server
-    testImplementation UnitTest.okHttp
+//    testImplementation UnitTest.okHttp //if you get issues try including this
 
     // compose testing
     implementation InstrumentationTest.compose_ui

@@ -17,13 +17,13 @@ class SearchRecipes(
     private val recipeService: RecipeService,
     private val entityMapper: RecipeEntityMapper,
     private val dtoMapper: RecipeDtoMapper,
-    private val connectivityManager: ConnectivityManager,
 ) {
 
   fun execute(
       token: String,
       page: Int,
-      query: String
+      query: String,
+      isNetworkAvailable: Boolean,
   ): Flow<DataState<List<Recipe>>> = flow {
     try {
       emit(DataState.loading())
@@ -37,7 +37,7 @@ class SearchRecipes(
       }
 
       // if there is a network connection
-      if(connectivityManager.isNetworkAvailable.value){
+      if(isNetworkAvailable){
         // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
         val recipes = getRecipesFromNetwork(
           token = token,

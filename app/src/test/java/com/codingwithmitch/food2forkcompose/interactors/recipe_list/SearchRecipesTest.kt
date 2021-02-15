@@ -79,7 +79,7 @@ class SearchRecipesTest {
         // confirm the cache is empty to start
         assert(recipeDao.getAllRecipes(1, 30).isEmpty())
 
-        val flowItems = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
+        val flowItems = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY, true).toList()
 
         // confirm the cache is no longer empty
         assert(recipeDao.getAllRecipes(1, 30).isNotEmpty())

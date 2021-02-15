@@ -82,7 +82,7 @@ class RestoreRecipesTest{
     assert(recipeDao.getAllRecipes(1, 30).isEmpty())
 
     // get recipes from network and insert into cache
-    val searchResult = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
+    val searchResult = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY, true).toList()
 
     // confirm the cache is no longer empty
     assert(recipeDao.getAllRecipes(1, 30).isNotEmpty())
