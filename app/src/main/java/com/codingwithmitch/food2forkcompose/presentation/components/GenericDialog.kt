@@ -9,67 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-data class PositiveAction(
-    val positiveBtnTxt: String,
-    val onPositiveAction: () -> Unit,
-)
-
-data class NegativeAction(
-    val negativeBtnTxt: String,
-    val onNegativeAction: () -> Unit,
-)
-
-data class GenericDialogInfo(
-    val title: String,
-    val onDismiss: () -> Unit,
-    val description: String?,
-    val positiveAction: PositiveAction?,
-    val negativeAction: NegativeAction?
-){
-  class Builder(
-      var title: String,
-      val onDismiss: () -> Unit,
-  ) {
-
-    private var description: String? = null
-    private var positiveAction: PositiveAction? = null
-    private var negativeAction: NegativeAction? = null
-
-    fun description(
-        description: String
-    ): Builder{
-      this.description = description
-      return this
-    }
-
-    fun positive(
-        positiveAction: PositiveAction?,
-    ) : Builder {
-      this.positiveAction = positiveAction
-      return this
-    }
-
-    fun negative(
-        negativeAction: NegativeAction
-    ) : Builder {
-      this.negativeAction = negativeAction
-      return this
-    }
-
-    fun build(): GenericDialogInfo {
-      return GenericDialogInfo(
-          title = this.title,
-          onDismiss = this.onDismiss,
-          description = this.description,
-          positiveAction = this.positiveAction,
-          negativeAction = this.negativeAction
-      )
-    }
-  }
-}
-
-
-
 @Composable
 fun GenericDialog(
     modifier: Modifier = Modifier,
@@ -125,10 +64,64 @@ fun GenericDialog(
 }
 
 
+data class PositiveAction(
+  val positiveBtnTxt: String,
+  val onPositiveAction: () -> Unit,
+)
 
+data class NegativeAction(
+  val negativeBtnTxt: String,
+  val onNegativeAction: () -> Unit,
+)
 
+data class GenericDialogInfo(
+  val title: String,
+  val onDismiss: () -> Unit,
+  val description: String?,
+  val positiveAction: PositiveAction?,
+  val negativeAction: NegativeAction?
+){
+  class Builder(
+    var title: String,
+    val onDismiss: () -> Unit,
+  ) {
 
+    private var description: String? = null
+    private var positiveAction: PositiveAction? = null
+    private var negativeAction: NegativeAction? = null
 
+    fun description(
+      description: String
+    ): Builder{
+      this.description = description
+      return this
+    }
+
+    fun positive(
+      positiveAction: PositiveAction?,
+    ) : Builder {
+      this.positiveAction = positiveAction
+      return this
+    }
+
+    fun negative(
+      negativeAction: NegativeAction
+    ) : Builder {
+      this.negativeAction = negativeAction
+      return this
+    }
+
+    fun build(): GenericDialogInfo {
+      return GenericDialogInfo(
+        title = this.title,
+        onDismiss = this.onDismiss,
+        description = this.description,
+        positiveAction = this.positiveAction,
+        negativeAction = this.negativeAction
+      )
+    }
+  }
+}
 
 
 

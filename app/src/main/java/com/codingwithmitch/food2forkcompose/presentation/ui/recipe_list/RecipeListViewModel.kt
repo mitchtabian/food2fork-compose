@@ -10,10 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecipes
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
-import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialogInfo
-import com.codingwithmitch.food2forkcompose.presentation.components.PositiveAction
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListEvent.*
 import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
+import com.codingwithmitch.food2forkcompose.presentation.util.DialogQueue
 import com.codingwithmitch.food2forkcompose.util.TAG
 import com.codingwithmitch.mvvmrecipeapp.presentation.components.util.SnackbarController
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,34 +58,7 @@ constructor(
 
   var recipeListScrollPosition = 0
 
-  // Queue for "First-In-First-Out" behavior
-  val messageQueue: MutableState<Queue<GenericDialogInfo>> = mutableStateOf(LinkedList())
-
-  fun removeHeadMessage(){
-    if (messageQueue.value.isNotEmpty()) {
-      val update = messageQueue.value
-      update.remove() // remove first (oldest message)
-      messageQueue.value = ArrayDeque() // force recompose (bug?)
-      messageQueue.value = update
-    }
-  }
-
-  fun appendErrorMessage(title: String, description: String){
-    messageQueue.value.offer(
-      GenericDialogInfo.Builder(
-        title = title,
-        onDismiss = {removeHeadMessage()}
-      )
-        .description(description)
-        .positive(
-          PositiveAction(
-            positiveBtnTxt = "Ok",
-            onPositiveAction = { removeHeadMessage() },
-          )
-        )
-        .build()
-    )
-  }
+  val dialogQueue = DialogQueue()
 
   init {
     savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
@@ -138,7 +110,7 @@ constructor(
       }
 
       dataState.error?.let { error ->
-        appendErrorMessage("An Error Occurred", error)
+        dialogQueue.appendErrorMessage("An Error Occurred", error)
       }
     }.launchIn(viewModelScope)
   }
@@ -157,7 +129,7 @@ constructor(
 
       dataState.error?.let { error ->
         Log.e(TAG, "newSearch: ${error}")
-        appendErrorMessage("An Error Occurred", error)
+        dialogQueue.appendErrorMessage("An Error Occurred", error)
       }
     }.launchIn(viewModelScope)
 
@@ -178,7 +150,7 @@ constructor(
 
           dataState.error?.let { error ->
             Log.e(TAG, "nextPage: ${error}")
-            appendErrorMessage("An Error Occurred", error)
+            dialogQueue.appendErrorMessage("An Error Occurred", error)
           }
         }.launchIn(viewModelScope)
       }

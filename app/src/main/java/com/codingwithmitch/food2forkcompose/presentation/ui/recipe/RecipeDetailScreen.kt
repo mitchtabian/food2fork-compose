@@ -39,7 +39,7 @@ fun RecipeDetailScreen(
 
         val loading = viewModel.loading.value
 
-        val messageQueue = viewModel.messageQueue.value
+        val dialogQueue = viewModel.dialogQueue
 
         val recipe = viewModel.recipe.value
 
@@ -50,8 +50,8 @@ fun RecipeDetailScreen(
             scaffoldState = scaffoldState,
             darkTheme = isDarkTheme,
             isNetworkAvailable = isNetworkAvailable,
-            messageQueue = messageQueue,
-            onDismiss = viewModel::removeHeadMessage,
+            dialogQueue = dialogQueue.queue.value,
+            onDismiss = dialogQueue::removeHeadMessage,
         ) {
             Scaffold(
                 scaffoldState = scaffoldState,

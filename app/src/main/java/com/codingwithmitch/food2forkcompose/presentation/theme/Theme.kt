@@ -47,7 +47,7 @@ fun AppTheme(
   isNetworkAvailable: Boolean,
   displayProgressBar: Boolean,
   scaffoldState: ScaffoldState,
-  messageQueue: Queue<GenericDialogInfo>? = null,
+  dialogQueue: Queue<GenericDialogInfo>? = null,
   onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
@@ -74,7 +74,7 @@ fun AppTheme(
         modifier = Modifier.align(Alignment.BottomCenter)
       )
       ProcessMessageStack(
-        messageQueue = messageQueue,
+        messageQueue = dialogQueue,
         onDismiss = onDismiss,
       )
     }

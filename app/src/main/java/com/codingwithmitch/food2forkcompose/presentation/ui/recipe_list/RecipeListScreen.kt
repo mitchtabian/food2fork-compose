@@ -2,23 +2,13 @@ package com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
-import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.AmbientContext
-import androidx.compose.ui.viewinterop.viewModel
-import androidx.hilt.navigation.HiltViewModelFactory
-import androidx.navigation.NavBackStackEntry
-import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialogInfo
 import com.codingwithmitch.food2forkcompose.presentation.components.RecipeList
 import com.codingwithmitch.food2forkcompose.presentation.components.SearchAppBar
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
-import com.codingwithmitch.mvvmrecipeapp.presentation.components.util.SnackbarController
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import java.util.*
 
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
@@ -40,7 +30,7 @@ fun RecipeListScreen(
 
     val page = viewModel.page.value
 
-    val messageQueue = viewModel.messageQueue.value
+    val dialogQueue = viewModel.dialogQueue
 
     val scaffoldState = rememberScaffoldState()
 
@@ -49,8 +39,8 @@ fun RecipeListScreen(
         scaffoldState = scaffoldState,
         darkTheme = isDarkTheme,
         isNetworkAvailable = isNetworkAvailable,
-        messageQueue = messageQueue,
-        onDismiss = viewModel::removeHeadMessage,
+        dialogQueue = dialogQueue.queue.value,
+        onDismiss = dialogQueue::removeHeadMessage,
     ) {
         Scaffold(
             topBar = {

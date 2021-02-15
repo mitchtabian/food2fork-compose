@@ -9,16 +9,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe.GetRecipe
-import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialogInfo
-import com.codingwithmitch.food2forkcompose.presentation.components.PositiveAction
 import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
+import com.codingwithmitch.food2forkcompose.presentation.util.DialogQueue
 import com.codingwithmitch.food2forkcompose.util.TAG
 import com.codingwithmitch.mvvmrecipeapp.presentation.components.util.SnackbarController
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -44,34 +42,7 @@ constructor(
 
     val snackbarController = SnackbarController(viewModelScope)
 
-    // Queue for "First-In-First-Out" behavior
-    val messageQueue: MutableState<Queue<GenericDialogInfo>> = mutableStateOf(LinkedList())
-
-    fun removeHeadMessage(){
-        if (messageQueue.value.isNotEmpty()) {
-            val update = messageQueue.value
-            update.remove() // remove first (oldest message)
-            messageQueue.value = ArrayDeque() // force recompose (bug?)
-            messageQueue.value = update
-        }
-    }
-
-    fun appendErrorMessage(title: String, description: String){
-        messageQueue.value.offer(
-            GenericDialogInfo.Builder(
-                title = title,
-                onDismiss = {removeHeadMessage()}
-            )
-                .description(description)
-                .positive(
-                    PositiveAction(
-                        positiveBtnTxt = "Ok",
-                        onPositiveAction = { removeHeadMessage() },
-                    )
-                )
-                .build()
-        )
-    }
+    val dialogQueue = DialogQueue()
 
     init {
         // restore or init for first time
@@ -106,7 +77,7 @@ constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "getRecipe: ${error}")
-                appendErrorMessage("An Error Occurred", error)
+                dialogQueue.appendErrorMessage("An Error Occurred", error)
             }
         }.launchIn(viewModelScope)
     }
