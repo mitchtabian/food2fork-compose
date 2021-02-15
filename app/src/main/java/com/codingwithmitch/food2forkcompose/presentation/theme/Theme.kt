@@ -73,8 +73,8 @@ fun AppTheme(
         },
         modifier = Modifier.align(Alignment.BottomCenter)
       )
-      ProcessMessageStack(
-        messageQueue = dialogQueue,
+      ProcessDialogQueue(
+        dialogQueue = dialogQueue,
         onDismiss = onDismiss,
       )
     }
@@ -82,11 +82,11 @@ fun AppTheme(
 }
 
 @Composable
-fun ProcessMessageStack(
-  messageQueue: Queue<GenericDialogInfo>?,
+fun ProcessDialogQueue(
+  dialogQueue: Queue<GenericDialogInfo>?,
   onDismiss: () -> Unit,
 ) {
-  messageQueue?.peek()?.let { dialogInfo ->
+  dialogQueue?.peek()?.let { dialogInfo ->
     GenericDialog(
       onDismiss = onDismiss,
       title = dialogInfo.title,
