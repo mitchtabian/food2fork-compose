@@ -72,8 +72,8 @@ class SearchRecipesTest {
         // condition the response
         mockWebServer.enqueue(
             MockResponse()
-            .setResponseCode(HttpURLConnection.HTTP_OK)
-            .setBody(recipeListResponse)
+                .setResponseCode(HttpURLConnection.HTTP_OK)
+                .setBody(recipeListResponse)
         )
 
         // confirm the cache is empty to start
@@ -93,6 +93,32 @@ class SearchRecipesTest {
 
         // confirm they are actually Recipe objects
         assert(recipes?.get(index = 0) is Recipe)
+
+        assert(!flowItems[1].loading) // loading should be false now
+    }
+
+
+    /**
+     * Simulate a bad request
+     */
+    @Test
+    fun getRecipesFromNetwork_emitHttpError(): Unit = runBlocking {
+
+        // condition the response
+        mockWebServer.enqueue(
+            MockResponse()
+                .setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+                .setBody("{}")
+        )
+
+        val flowItems = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY, true).toList()
+
+        // first emission should be `loading`
+        assert(flowItems[0].loading)
+
+        // Second emission should be the exception
+        val error = flowItems[1].error
+        assert(error != null)
 
         assert(!flowItems[1].loading) // loading should be false now
     }
