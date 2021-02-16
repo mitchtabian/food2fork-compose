@@ -3,6 +3,7 @@ package com.codingwithmitch.food2forkcompose.presentation
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
@@ -14,13 +15,14 @@ import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import com.codingwithmitch.food2forkcompose.interactors.app.DoesNetworkHaveInternet
 import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeDetailScreen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeViewModel
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListScreen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
@@ -39,8 +41,21 @@ class MainActivity : AppCompatActivity(){
 
     // Called when the framework connects and has declared a new network ready for use.
     override fun onAvailable(network: Network) {
-      super.onAvailable(network)
       Log.d(TAG, "onAvailable: ${network}")
+      val networkCapabilities = cm.getNetworkCapabilities(network)
+      val hasInternetCapability = networkCapabilities?.hasCapability(NET_CAPABILITY_INTERNET)
+      Log.d(TAG, "onAvailable: ${network}, $hasInternetCapability")
+      if (hasInternetCapability == true) {
+        // check if this network actually has internet
+        CoroutineScope(Dispatchers.IO).launch {
+          val hasInternet = DoesNetworkHaveInternet.execute()
+          if (hasInternet) {
+            withContext(Dispatchers.Main) {
+              Log.d(TAG, "onAvailable: This network has internet: ${network}")
+            }
+          }
+        }
+      }
     }
 
     // Called when a network disconnects or otherwise no longer satisfies this request or callback
