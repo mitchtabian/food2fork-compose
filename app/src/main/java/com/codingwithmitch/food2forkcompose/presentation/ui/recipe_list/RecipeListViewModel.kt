@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecipes
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
+import com.codingwithmitch.food2forkcompose.presentation.ui.util.DialogQueue
 import com.codingwithmitch.food2forkcompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -47,6 +48,8 @@ constructor(
     val page = mutableStateOf(1)
 
     var recipeListScrollPosition = 0
+
+    val dialogQueue = DialogQueue()
 
     init {
         savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
@@ -104,7 +107,7 @@ constructor(
             }
 
             dataState.error?.let { error ->
-                // TODO("handle error")
+                dialogQueue.appendErrorMessage("An Error Occurred", error)
             }
         }.launchIn(viewModelScope)
     }
@@ -123,7 +126,7 @@ constructor(
 
             dataState.error?.let { error ->
                 Log.e(TAG, "newSearch: ${error}")
-                // TODO("Handle error")
+                dialogQueue.appendErrorMessage("An Error Occurred", error)
             }
         }.launchIn(viewModelScope)
     }
@@ -143,7 +146,7 @@ constructor(
 
                     dataState.error?.let { error ->
                         Log.e(TAG, "nextPage: ${error}")
-                        // TODO("Handle error")
+                        dialogQueue.appendErrorMessage("An Error Occurred", error)
                     }
                 }.launchIn(viewModelScope)
             }

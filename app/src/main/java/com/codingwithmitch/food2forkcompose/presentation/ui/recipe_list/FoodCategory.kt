@@ -4,6 +4,7 @@ import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.FoodCate
 
 
 enum class FoodCategory(val value: String){
+    ERROR("error"),
     CHICKEN("Chicken"),
     BEEF("Beef"),
     SOUP("Soup"),
@@ -17,8 +18,7 @@ enum class FoodCategory(val value: String){
 
 fun getAllFoodCategories(): List<FoodCategory>{
     return listOf(
-        CHICKEN,
-        BEEF, SOUP, DESSERT, VEGETARIAN, MILK, VEGAN, PIZZA, DONUT)
+        ERROR, CHICKEN, BEEF, SOUP, DESSERT, VEGETARIAN, MILK, VEGAN, PIZZA, DONUT)
 }
 
 fun getFoodCategory(value: String): FoodCategory? {

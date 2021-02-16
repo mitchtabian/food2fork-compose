@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.codingwithmitch.food2forkcompose.presentation.components.*
+import java.util.*
 
 private val LightThemeColors = lightColors(
   primary = Blue600,
@@ -46,6 +47,8 @@ fun AppTheme(
   darkTheme: Boolean,
   displayProgressBar: Boolean,
   scaffoldState: ScaffoldState,
+  dialogQueue: Queue<GenericDialogInfo>? = null,
+  onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   MaterialTheme(
@@ -67,38 +70,28 @@ fun AppTheme(
         },
         modifier = Modifier.align(Alignment.BottomCenter)
       )
-
-      val isShowing = remember{ mutableStateOf(true)}
-      if(isShowing.value){
-        val dialogInfo = GenericDialogInfo.Builder(
-          title = "Error",
-          onDismiss = {isShowing.value = false}
-        )
-          .description("Hey look a dialog description")
-          .positive(
-            positiveAction = PositiveAction(
-              positiveBtnTxt = "OK",
-              onPositiveAction = {isShowing.value = false }
-            )
-          )
-          .negative(
-            negativeAction = NegativeAction(
-              negativeBtnTxt = "Cancel",
-              onNegativeAction = {isShowing.value = false }
-            )
-          )
-          .build()
-
-        GenericDialog(
-          onDismiss = dialogInfo.onDismiss,
-          title = dialogInfo.title,
-          description = dialogInfo.description,
-          positiveAction = dialogInfo.positiveAction,
-          negativeAction = dialogInfo.negativeAction
-        )
-      }
-
+      ProcessDialogQueue(
+        dialogQueue = dialogQueue,
+        onDismiss = onDismiss,
+      )
     }
+  }
+}
+
+
+@Composable
+fun ProcessDialogQueue(
+  dialogQueue: Queue<GenericDialogInfo>?,
+  onDismiss: () -> Unit,
+) {
+  dialogQueue?.peek()?.let { dialogInfo ->
+    GenericDialog(
+      onDismiss = onDismiss,
+      title = dialogInfo.title,
+      description = dialogInfo.description,
+      positiveAction = dialogInfo.positiveAction,
+      negativeAction = dialogInfo.negativeAction
+    )
   }
 }
 

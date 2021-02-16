@@ -29,7 +29,7 @@ class SearchRecipes(
       // just to show pagination, api is fast
       delay(1000)
 
-        // force error for testing
+      // force error for testing
       if (query == "error") {
           throw Exception("Search FAILED!")
       }
