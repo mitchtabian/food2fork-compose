@@ -5,11 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.codingwithmitch.food2forkcompose.presentation.components.CircularIndeterminateProgressBar
-import com.codingwithmitch.food2forkcompose.presentation.components.DefaultSnackbar
+import com.codingwithmitch.food2forkcompose.presentation.components.*
 
 private val LightThemeColors = lightColors(
   primary = Blue600,
@@ -55,7 +56,7 @@ fun AppTheme(
     Box(
       modifier = Modifier
         .fillMaxSize()
-        .background(color = if(!darkTheme) Grey1 else Color.Black)
+        .background(color = if (!darkTheme) Grey1 else Color.Black)
     ){
       content()
       CircularIndeterminateProgressBar(isDisplayed = displayProgressBar, 0.3f)
@@ -66,6 +67,24 @@ fun AppTheme(
         },
         modifier = Modifier.align(Alignment.BottomCenter)
       )
+
+      val isShowing = remember{ mutableStateOf(true)}
+      if(isShowing.value){
+        GenericDialog(
+          onDismiss = { isShowing.value = false },
+          title = "Error",
+          description = "Hey look a dialog description",
+          positiveAction = PositiveAction(
+            positiveBtnTxt = "OK",
+            onPositiveAction = {isShowing.value = false }
+          ),
+          negativeAction = NegativeAction(
+            negativeBtnTxt = "Cancel",
+            onNegativeAction = {isShowing.value = false }
+          )
+        )
+      }
+
     }
   }
 }
