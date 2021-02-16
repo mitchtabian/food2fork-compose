@@ -2,16 +2,14 @@ package com.codingwithmitch.food2forkcompose.presentation.theme
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.codingwithmitch.food2forkcompose.presentation.components.CircularIndeterminateProgressBar
-import com.codingwithmitch.food2forkcompose.presentation.components.DefaultSnackbar
-import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialog
-import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialogInfo
+import com.codingwithmitch.food2forkcompose.presentation.components.*
 import java.util.*
 
 private val LightThemeColors = lightColors(
@@ -46,6 +44,7 @@ private val DarkThemeColors = darkColors(
 @Composable
 fun AppTheme(
   darkTheme: Boolean,
+  isNetworkAvailable: Boolean,
   displayProgressBar: Boolean,
   scaffoldState: ScaffoldState,
   dialogQueue: Queue<GenericDialogInfo>? = null,
@@ -62,7 +61,10 @@ fun AppTheme(
         .fillMaxSize()
         .background(color = if (!darkTheme) Grey1 else Color.Black)
     ){
-      content()
+      Column{
+        ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
+        content()
+      }
       CircularIndeterminateProgressBar(isDisplayed = displayProgressBar, 0.3f)
       DefaultSnackbar(
         snackbarHostState = scaffoldState.snackbarHostState,

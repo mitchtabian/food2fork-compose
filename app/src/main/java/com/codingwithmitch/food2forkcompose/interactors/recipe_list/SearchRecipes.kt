@@ -21,7 +21,7 @@ class SearchRecipes(
   fun execute(
       token: String,
       page: Int,
-      query: String
+      query: String,
   ): Flow<DataState<List<Recipe>>> = flow {
     try {
       emit(DataState.loading())
