@@ -67,6 +67,57 @@ data class NegativeAction(
 )
 
 
+data class GenericDialogInfo(
+  val title: String,
+  val onDismiss: () -> Unit,
+  val description: String?,
+  val positiveAction: PositiveAction?,
+  val negativeAction: NegativeAction?
+){
+  class Builder(
+    private var title: String,
+    private val onDismiss: () -> Unit,
+  ) {
+
+    private var description: String? = null
+    private var positiveAction: PositiveAction? = null
+    private var negativeAction: NegativeAction? = null
+
+    fun description(
+      description: String
+    ): Builder{
+      this.description = description
+      return this
+    }
+
+    fun positive(
+      positiveAction: PositiveAction?,
+    ) : Builder {
+      this.positiveAction = positiveAction
+      return this
+    }
+
+    fun negative(
+      negativeAction: NegativeAction
+    ) : Builder {
+      this.negativeAction = negativeAction
+      return this
+    }
+
+    fun build(): GenericDialogInfo {
+      return GenericDialogInfo(
+        title = this.title,
+        onDismiss = this.onDismiss,
+        description = this.description,
+        positiveAction = this.positiveAction,
+        negativeAction = this.negativeAction
+      )
+    }
+
+  }
+}
+
+
 
 
 

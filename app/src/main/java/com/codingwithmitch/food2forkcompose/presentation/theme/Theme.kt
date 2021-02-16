@@ -70,18 +70,31 @@ fun AppTheme(
 
       val isShowing = remember{ mutableStateOf(true)}
       if(isShowing.value){
-        GenericDialog(
-          onDismiss = { isShowing.value = false },
+        val dialogInfo = GenericDialogInfo.Builder(
           title = "Error",
-          description = "Hey look a dialog description",
-          positiveAction = PositiveAction(
-            positiveBtnTxt = "OK",
-            onPositiveAction = {isShowing.value = false }
-          ),
-          negativeAction = NegativeAction(
-            negativeBtnTxt = "Cancel",
-            onNegativeAction = {isShowing.value = false }
+          onDismiss = {isShowing.value = false}
+        )
+          .description("Hey look a dialog description")
+          .positive(
+            positiveAction = PositiveAction(
+              positiveBtnTxt = "OK",
+              onPositiveAction = {isShowing.value = false }
+            )
           )
+          .negative(
+            negativeAction = NegativeAction(
+              negativeBtnTxt = "Cancel",
+              onNegativeAction = {isShowing.value = false }
+            )
+          )
+          .build()
+
+        GenericDialog(
+          onDismiss = dialogInfo.onDismiss,
+          title = dialogInfo.title,
+          description = dialogInfo.description,
+          positiveAction = dialogInfo.positiveAction,
+          negativeAction = dialogInfo.negativeAction
         )
       }
 
