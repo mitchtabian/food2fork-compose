@@ -23,6 +23,7 @@ class GetRecipe (
   fun execute(
     recipeId: Int,
     token: String,
+    isNetworkAvailable: Boolean,
   ): Flow<DataState<Recipe>> = flow {
     try {
       emit(DataState.loading())
@@ -38,15 +39,16 @@ class GetRecipe (
       // if the recipe is null, it means it was not in the cache for some reason. So get from network.
       else{
 
-        // TODO("Check if there is an internet connection")
-        // get recipe from network
-        val networkRecipe = getRecipeFromNetwork(token, recipeId) // dto -> domain
+        if(isNetworkAvailable){
+          // get recipe from network
+          val networkRecipe = getRecipeFromNetwork(token, recipeId) // dto -> domain
 
-        // insert into cache
-        recipeDao.insertRecipe(
-          // map domain -> entity
-          entityMapper.mapFromDomainModel(networkRecipe)
-        )
+          // insert into cache
+          recipeDao.insertRecipe(
+            // map domain -> entity
+            entityMapper.mapFromDomainModel(networkRecipe)
+          )
+        }
 
         // get from cache
         recipe = getRecipeFromCache(recipeId = recipeId)

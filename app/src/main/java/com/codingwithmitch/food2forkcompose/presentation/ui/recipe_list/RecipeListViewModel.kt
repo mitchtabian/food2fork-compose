@@ -10,6 +10,7 @@ import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.RestoreRecipes
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
 import com.codingwithmitch.food2forkcompose.presentation.ui.util.DialogQueue
+import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
 import com.codingwithmitch.food2forkcompose.util.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -31,6 +32,7 @@ class RecipeListViewModel
 constructor(
     private val searchRecipes: SearchRecipes,
     private val restoreRecipes: RestoreRecipes,
+    private val connectivityManager: ConnectivityManager,
     private @Named("auth_token") val token: String,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -117,7 +119,7 @@ constructor(
         // New search. Reset the state
         resetSearchState()
 
-        searchRecipes.execute(token = token, page = page.value, query = query.value).onEach { dataState ->
+        searchRecipes.execute(token = token, page = page.value, query = query.value, connectivityManager.isNetworkAvailable.value).onEach { dataState ->
             loading.value = dataState.loading
 
             dataState.data?.let { list ->
@@ -137,7 +139,7 @@ constructor(
             Log.d(TAG, "nextPage: triggered: ${page.value}")
 
             if (page.value > 1) {
-                searchRecipes.execute(token = token, page = page.value, query = query.value).onEach { dataState ->
+                searchRecipes.execute(token = token, page = page.value, query = query.value, connectivityManager.isNetworkAvailable.value).onEach { dataState ->
                     loading.value = dataState.loading
 
                     dataState.data?.let { list ->
