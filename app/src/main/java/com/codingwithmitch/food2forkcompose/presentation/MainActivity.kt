@@ -28,10 +28,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity(){
 
   val TAG = "c-manager"
-  val cm = this.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+
+  lateinit var cm: ConnectivityManager
+
   val networkRequest = NetworkRequest.Builder()
     .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     .build()
+
   val networkCallback = object: ConnectivityManager.NetworkCallback() {
 
     // Called when the framework connects and has declared a new network ready for use.
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity(){
 
   override fun onStart() {
     super.onStart()
+    cm = this.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
     cm.registerNetworkCallback(networkRequest, networkCallback)
   }
 
