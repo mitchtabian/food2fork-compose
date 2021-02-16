@@ -14,6 +14,7 @@ class BaseApplication : Application(){
         isDark.value = !isDark.value
     }
 
+
 }
 
 

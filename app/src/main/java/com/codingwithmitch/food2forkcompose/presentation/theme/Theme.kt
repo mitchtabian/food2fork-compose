@@ -5,12 +5,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.codingwithmitch.food2forkcompose.presentation.components.*
+import com.codingwithmitch.food2forkcompose.presentation.components.CircularIndeterminateProgressBar
+import com.codingwithmitch.food2forkcompose.presentation.components.DefaultSnackbar
+import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialog
+import com.codingwithmitch.food2forkcompose.presentation.components.GenericDialogInfo
 import java.util.*
 
 private val LightThemeColors = lightColors(
@@ -77,6 +78,7 @@ fun AppTheme(
     }
   }
 }
+
 
 
 @Composable
