@@ -40,7 +40,6 @@ fun RecipeListScreen(
         darkTheme = isDarkTheme,
         isNetworkAvailable = isNetworkAvailable,
         dialogQueue = dialogQueue.queue.value,
-        onDismiss = dialogQueue::removeHeadMessage,
     ) {
         Scaffold(
             topBar = {
