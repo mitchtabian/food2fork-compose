@@ -48,7 +48,6 @@ fun AppTheme(
   displayProgressBar: Boolean,
   scaffoldState: ScaffoldState,
   dialogQueue: Queue<GenericDialogInfo>? = null,
-  onDismiss: () -> Unit,
   content: @Composable () -> Unit,
 ) {
   MaterialTheme(
@@ -75,7 +74,6 @@ fun AppTheme(
       )
       ProcessDialogQueue(
         dialogQueue = dialogQueue,
-        onDismiss = onDismiss,
       )
     }
   }
@@ -86,11 +84,10 @@ fun AppTheme(
 @Composable
 fun ProcessDialogQueue(
   dialogQueue: Queue<GenericDialogInfo>?,
-  onDismiss: () -> Unit,
 ) {
   dialogQueue?.peek()?.let { dialogInfo ->
     GenericDialog(
-      onDismiss = onDismiss,
+      onDismiss = dialogInfo.onDismiss,
       title = dialogInfo.title,
       description = dialogInfo.description,
       positiveAction = dialogInfo.positiveAction,
