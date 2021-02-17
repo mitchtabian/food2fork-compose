@@ -41,7 +41,6 @@ fun RecipeListScreen(
     scaffoldState = scaffoldState,
     darkTheme = isDarkTheme,
     dialogQueue = dialogQueue.queue.value,
-    onDismiss = dialogQueue::removeHeadMessage,
   ) {
     Scaffold(
       topBar = {

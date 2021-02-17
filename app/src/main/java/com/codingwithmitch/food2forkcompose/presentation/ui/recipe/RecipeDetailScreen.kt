@@ -45,7 +45,6 @@ fun RecipeDetailScreen(
       scaffoldState = scaffoldState,
       darkTheme = isDarkTheme,
       dialogQueue = dialogQueue.queue.value,
-      onDismiss = dialogQueue::removeHeadMessage,
     ){
       Scaffold(
         scaffoldState = scaffoldState,
