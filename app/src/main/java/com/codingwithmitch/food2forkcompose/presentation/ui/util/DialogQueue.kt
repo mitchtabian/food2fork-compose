@@ -22,10 +22,9 @@ class DialogQueue {
 
   fun appendErrorMessage(title: String, description: String){
     queue.value.offer(
-      GenericDialogInfo.Builder(
-        title = title,
-        onDismiss = this::removeHeadMessage
-      )
+      GenericDialogInfo.Builder()
+        .title(title)
+        .onDismiss(this::removeHeadMessage)
         .description(description)
         .positive(
           PositiveAction(

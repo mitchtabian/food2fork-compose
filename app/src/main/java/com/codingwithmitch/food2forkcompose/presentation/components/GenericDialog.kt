@@ -67,21 +67,55 @@ data class NegativeAction(
 )
 
 
-data class GenericDialogInfo(
-  val title: String,
-  val onDismiss: () -> Unit,
-  val description: String?,
-  val positiveAction: PositiveAction?,
-  val negativeAction: NegativeAction?
-){
-  class Builder(
-    private var title: String,
-    private val onDismiss: () -> Unit,
-  ) {
+class GenericDialogInfo
+private constructor(builder: GenericDialogInfo.Builder){
 
-    private var description: String? = null
-    private var positiveAction: PositiveAction? = null
-    private var negativeAction: NegativeAction? = null
+  val title: String
+  val onDismiss: () -> Unit
+  val description: String?
+  val positiveAction: PositiveAction?
+  val negativeAction: NegativeAction?
+
+  init {
+    if(builder.title == null){
+      throw Exception("GenericDialog title cannot be null.")
+    }
+    if(builder.onDismiss == null){
+      throw Exception("GenericDialog onDismiss function cannot be null.")
+    }
+    this.title = builder.title!!
+    this.onDismiss = builder.onDismiss!!
+    this.description = builder.description
+    this.positiveAction = builder.positiveAction
+    this.negativeAction = builder.negativeAction
+  }
+
+  class Builder {
+
+    var title: String? = null
+      private set
+
+    var onDismiss: (() -> Unit)? = null
+      private set
+
+    var description: String? = null
+      private set
+
+    var positiveAction: PositiveAction? = null
+      private set
+
+    var negativeAction: NegativeAction? = null
+      private set
+
+    fun title(title: String): Builder{
+      this.title = title
+      return this
+    }
+
+    fun onDismiss(onDismiss: () -> Unit): Builder{
+      this.onDismiss = onDismiss
+      return this
+    }
 
     fun description(
       description: String
@@ -104,19 +138,9 @@ data class GenericDialogInfo(
       return this
     }
 
-    fun build(): GenericDialogInfo {
-      return GenericDialogInfo(
-        title = this.title,
-        onDismiss = this.onDismiss,
-        description = this.description,
-        positiveAction = this.positiveAction,
-        negativeAction = this.negativeAction
-      )
-    }
-
+    fun build() = GenericDialogInfo(this)
   }
 }
-
 
 
 
