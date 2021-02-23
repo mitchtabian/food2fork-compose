@@ -46,9 +46,6 @@ class MainActivity : AppCompatActivity(){
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
-      val isInternetAvailable = connectivityManager.isNetworkAvailable.value
-      Log.d(TAG, "onCreate: IS INTERNET AVAILABLE? ${isInternetAvailable}")
-      
       val navController = rememberNavController()
       NavHost(navController = navController, startDestination = Screen.RecipeList.route) {
         composable(route = Screen.RecipeList.route) { navBackStackEntry ->
