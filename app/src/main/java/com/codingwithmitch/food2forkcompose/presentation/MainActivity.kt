@@ -10,6 +10,7 @@ import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
+import com.codingwithmitch.food2forkcompose.datastore.SettingsDataStore
 import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeDetailScreen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeViewModel
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity(){
 
   @Inject
   lateinit var connectivityManager: ConnectivityManager
+
+  @Inject
+  lateinit var settingsDataStore: SettingsDataStore
 
   override fun onStart() {
     super.onStart()
@@ -51,9 +55,9 @@ class MainActivity : AppCompatActivity(){
           val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
           val viewModel: RecipeListViewModel = viewModel("RecipeListViewModel", factory)
           RecipeListScreen(
-            isDarkTheme = (application as BaseApplication).isDark.value,
+            isDarkTheme = settingsDataStore.isDark.value,
             isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
-            onToggleTheme = (application as BaseApplication)::toggleLightTheme,
+            onToggleTheme = settingsDataStore::toggleTheme,
             onNavigateToRecipeDetailScreen = navController::navigate,
             viewModel = viewModel,
           )
@@ -67,7 +71,7 @@ class MainActivity : AppCompatActivity(){
           val factory = HiltViewModelFactory(AmbientContext.current, navBackStackEntry)
           val viewModel: RecipeViewModel = viewModel("RecipeDetailViewModel", factory)
           RecipeDetailScreen(
-            isDarkTheme = (application as BaseApplication).isDark.value,
+            isDarkTheme = settingsDataStore.isDark.value,
             isNetworkAvailable = connectivityManager.isNetworkAvailable.value,
             recipeId = navBackStackEntry.arguments?.getInt("recipeId"),
             viewModel = viewModel,
