@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import retrofit2.Retrofit
@@ -61,6 +62,11 @@ class SearchRecipesTest {
         .setResponseCode(HttpURLConnection.HTTP_OK)
         .setBody(recipeListResponse)
     )
+  }
+
+  @AfterEach
+  fun tearDown(){
+    mockWebServer.shutdown()
   }
 }
 
