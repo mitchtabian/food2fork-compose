@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,6 +35,7 @@ fun SearchAppBar(
   onSelectedCategoryChanged: (String) -> Unit,
   onToggleTheme: () -> Unit,
 ) {
+  val focusManager = LocalFocusManager.current
   Surface(
     modifier = Modifier
       .fillMaxWidth(),
@@ -60,7 +62,7 @@ fun SearchAppBar(
           keyboardActions = KeyboardActions(
             onDone = {
               onExecuteSearch()
-              //TODO("Figure out how to close keyboard")
+              focusManager.clearFocus(forcedClear = true) // close keyboard
             },
           ),
           leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
