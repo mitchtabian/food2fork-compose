@@ -73,6 +73,7 @@ dependencies {
     implementation AndroidX.compose_material
     implementation AndroidX.compose_icons_core
     implementation AndroidX.compose_icons_extended
+    implementation AndroidX.constraint_compose
     implementation AndroidX.navigation_compose
     implementation AndroidX.navigation_hilt
     implementation AndroidX.room_runtime

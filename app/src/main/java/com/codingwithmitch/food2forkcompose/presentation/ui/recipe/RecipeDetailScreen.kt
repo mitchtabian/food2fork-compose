@@ -6,6 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.codingwithmitch.food2forkcompose.presentation.components.IMAGE_HEIGHT
@@ -14,6 +15,7 @@ import com.codingwithmitch.food2forkcompose.presentation.components.RecipeView
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable

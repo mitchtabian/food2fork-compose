@@ -1,11 +1,12 @@
 package com.codingwithmitch.food2forkcompose.presentation.components
 
-import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.constraintlayout.compose.ConstraintLayout
 
 /**
  * Center a circular indeterminate progress bar with optional vertical bias.
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
  * NOTE: You do not need a ConstraintLayout here. A Row would have been perfectly fine.
  * I just left it here as an example.
  */
+@ExperimentalComposeUiApi
 @Composable
 fun CircularIndeterminateProgressBar(isDisplayed: Boolean, verticalBias: Float) {
     if (isDisplayed) {
@@ -24,14 +26,13 @@ fun CircularIndeterminateProgressBar(isDisplayed: Boolean, verticalBias: Float) 
             CircularProgressIndicator(
                 modifier = Modifier.constrainAs(progressBar)
                 {
-                        top.linkTo(topBias)
-                        end.linkTo(parent.end)
-                        start.linkTo(parent.start)
+                    top.linkTo(topBias)
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
                 },
                 color = MaterialTheme.colors.primary
             )
         }
-
     }
 }
 

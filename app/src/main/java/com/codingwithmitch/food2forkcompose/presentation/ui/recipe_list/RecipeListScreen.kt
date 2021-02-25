@@ -5,12 +5,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import com.codingwithmitch.food2forkcompose.presentation.components.RecipeList
 import com.codingwithmitch.food2forkcompose.presentation.components.SearchAppBar
 import com.codingwithmitch.food2forkcompose.presentation.theme.AppTheme
 import com.codingwithmitch.food2forkcompose.util.TAG
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalComposeUiApi
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
