@@ -15,8 +15,10 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,6 +27,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.FoodCategory
 
 
+@ExperimentalComposeUiApi
 @Composable
 fun SearchAppBar(
   query: String,
@@ -36,6 +39,7 @@ fun SearchAppBar(
   onToggleTheme: () -> Unit,
 ) {
   val focusManager = LocalFocusManager.current
+  val keyboardController = LocalSoftwareKeyboardController.current
   Surface(
     modifier = Modifier
       .fillMaxWidth(),
@@ -62,7 +66,8 @@ fun SearchAppBar(
           keyboardActions = KeyboardActions(
             onDone = {
               onExecuteSearch()
-              focusManager.clearFocus(forcedClear = true) // close keyboard
+//              focusManager.clearFocus(forcedClear = true) // close keyboard
+               keyboardController?.hideSoftwareKeyboard() // another way to close keyboard
             },
           ),
           leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
