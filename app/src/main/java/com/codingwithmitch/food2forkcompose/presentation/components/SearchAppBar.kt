@@ -23,10 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.FoodCategory
 
-enum class InputSelector {
-  NONE,
-  TEXT
-}
 
 @Composable
 fun SearchAppBar(
