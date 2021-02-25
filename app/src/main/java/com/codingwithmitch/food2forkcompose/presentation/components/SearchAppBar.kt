@@ -1,7 +1,9 @@
 package com.codingwithmitch.food2forkcompose.presentation.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -12,14 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusState
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -53,12 +49,11 @@ fun SearchAppBar(
         modifier = Modifier
           .fillMaxWidth()
       ) {
-        val currentInputSelector = remember { mutableStateOf(InputSelector.NONE) }
-        val dismissKeyboard = {currentInputSelector.value = InputSelector.NONE}
         TextField(
           modifier = Modifier
             .fillMaxWidth(.9f)
-            .padding(8.dp),
+            .padding(8.dp)
+            ,
           value = query,
           onValueChange = { onQueryChanged(it) },
           label = { Text(text = "Search") },
@@ -69,6 +64,7 @@ fun SearchAppBar(
           keyboardActions = KeyboardActions(
             onDone = {
               onExecuteSearch()
+              //TODO("Figure out how to close keyboard")
             },
           ),
           leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
