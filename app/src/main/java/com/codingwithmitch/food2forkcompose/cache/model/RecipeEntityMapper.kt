@@ -1,11 +1,10 @@
 package com.codingwithmitch.food2forkcompose.cache.model
 
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
+import com.codingwithmitch.food2forkcompose.domain.util.DomainMapper
 import com.codingwithmitch.food2forkcompose.util.DateUtils
-import com.codingwithmitch.food2forkcompose.util.DomainMapper
-import java.lang.NullPointerException
 
-class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe>{
+class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe> {
 
     override fun mapToDomainModel(model: RecipeEntity): Recipe {
         return Recipe(
@@ -66,23 +65,3 @@ class RecipeEntityMapper : DomainMapper<RecipeEntity, Recipe>{
         return initial.map { mapFromDomainModel(it) }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

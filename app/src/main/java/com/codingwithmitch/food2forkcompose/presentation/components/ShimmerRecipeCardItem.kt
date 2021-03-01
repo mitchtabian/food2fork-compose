@@ -33,7 +33,7 @@ fun ShimmerRecipeCardItem(
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .preferredSize(cardHeight)
+                    .height(cardHeight)
                     .background(brush = brush)
             )
         }
@@ -46,11 +46,21 @@ fun ShimmerRecipeCardItem(
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .preferredHeight(cardHeight / 10)
+                    .height(cardHeight / 10)
                     .background(brush = brush)
             )
         }
     }
 
 }
+
+
+
+
+
+
+
+
+
+
 

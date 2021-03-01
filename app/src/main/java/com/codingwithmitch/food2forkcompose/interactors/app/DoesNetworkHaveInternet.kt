@@ -1,10 +1,9 @@
 package com.codingwithmitch.food2forkcompose.interactors.app
 
 import android.util.Log
-import com.codingwithmitch.food2forkcompose.presentation.util.TAG
+import com.codingwithmitch.food2forkcompose.util.TAG
 import java.io.IOException
 import java.net.InetSocketAddress
-import java.net.Socket
 import javax.net.SocketFactory
 
 

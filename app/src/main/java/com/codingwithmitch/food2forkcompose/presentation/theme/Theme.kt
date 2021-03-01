@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.codingwithmitch.food2forkcompose.presentation.components.*
@@ -40,6 +41,7 @@ private val DarkThemeColors = darkColors(
   onSurface = Color.White,
 )
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun AppTheme(
@@ -54,12 +56,12 @@ fun AppTheme(
     colors = if (darkTheme) DarkThemeColors else LightThemeColors,
     typography = QuickSandTypography,
     shapes = AppShapes
-  ) {
+  ){
     Box(
       modifier = Modifier
         .fillMaxSize()
         .background(color = if (!darkTheme) Grey1 else Color.Black)
-    ) {
+    ){
       Column{
         ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
         content()
@@ -79,6 +81,8 @@ fun AppTheme(
   }
 }
 
+
+
 @Composable
 fun ProcessDialogQueue(
   dialogQueue: Queue<GenericDialogInfo>?,
@@ -93,6 +97,12 @@ fun ProcessDialogQueue(
     )
   }
 }
+
+
+
+
+
+
 
 
 

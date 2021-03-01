@@ -1,10 +1,10 @@
 package com.codingwithmitch.food2forkcompose.interactors.recipe_list
 
+import com.codingwithmitch.food2fork.network.RecipeService
 import com.codingwithmitch.food2forkcompose.cache.AppDatabaseFake
 import com.codingwithmitch.food2forkcompose.cache.RecipeDaoFake
 import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.data.MockWebServerResponses
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import com.google.gson.GsonBuilder
@@ -109,18 +109,3 @@ class RestoreRecipesTest{
     mockWebServer.shutdown()
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

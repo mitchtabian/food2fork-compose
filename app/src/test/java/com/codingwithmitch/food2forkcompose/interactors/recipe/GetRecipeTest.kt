@@ -1,11 +1,11 @@
 package com.codingwithmitch.food2forkcompose.interactors.recipe
 
+import com.codingwithmitch.food2fork.network.RecipeService
 import com.codingwithmitch.food2forkcompose.cache.AppDatabaseFake
 import com.codingwithmitch.food2forkcompose.cache.RecipeDaoFake
 import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
 import com.codingwithmitch.food2forkcompose.interactors.recipe_list.SearchRecipes
-import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.data.MockWebServerResponses
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import com.google.gson.GsonBuilder
@@ -28,10 +28,10 @@ class GetRecipeTest {
   private lateinit var baseUrl: HttpUrl
   private val DUMMY_TOKEN = "gg335v5453453" // can be anything
   private val DUMMY_QUERY = "This doesn't matter" // can be anything
-  private val RECIPE_ID = 1551
 
   // system in test
   private lateinit var getRecipe: GetRecipe
+  private val RECIPE_ID = 1551
 
   // Dependencies
   private lateinit var searchRecipes: SearchRecipes
@@ -151,28 +151,3 @@ class GetRecipeTest {
     mockWebServer.shutdown()
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

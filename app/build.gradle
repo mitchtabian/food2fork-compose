@@ -9,10 +9,10 @@ import dependencies.Google
 import dependencies.Glide
 
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "kotlin-kapt"
-    id "dagger.hilt.android.plugin"
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
     id "de.mannodermaus.android-junit5"
 }
 
@@ -66,12 +66,16 @@ dependencies {
     implementation AndroidX.app_compat
     implementation AndroidX.constraint_layout
     implementation AndroidX.ui_tooling
+    implementation AndroidX.nav_fragment_ktx // will remove later
+    implementation AndroidX.nav_ui_ktx // will remove later
     implementation AndroidX.compose_ui
     implementation AndroidX.compose_foundation
     implementation AndroidX.compose_material
     implementation AndroidX.compose_icons_core
     implementation AndroidX.compose_icons_extended
+    implementation AndroidX.constraint_compose
     implementation AndroidX.navigation_compose
+    implementation AndroidX.compose_activity
     implementation AndroidX.navigation_hilt
     implementation AndroidX.room_runtime
     implementation AndroidX.room_ktx
@@ -100,21 +104,11 @@ dependencies {
 
     // Mock web server
     testImplementation UnitTest.mock_web_server
-//    testImplementation UnitTest.okHttp //if you get issues try including this
+//    testImplementation UnitTest.okHttp // include this if you get issues
 
     // compose testing
     implementation InstrumentationTest.compose_ui
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
