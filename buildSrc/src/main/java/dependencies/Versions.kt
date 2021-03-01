@@ -22,6 +22,7 @@ object Versions {
   const val androidx_ui = "1.0.0-alpha07"
   const val compose = "1.0.0-beta01"
   const val compose_constraint = "1.0.0-alpha03"
+  const val compose_activity = "1.3.0-alpha03"
   const val hilt_lifecycle_viewmodel = "1.0.0-alpha03"
   const val nav_component = "2.3.2"
   const val nav_compose = "1.0.0-alpha08"

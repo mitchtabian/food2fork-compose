@@ -19,6 +19,7 @@ object AndroidX {
 
   const val navigation_compose = "androidx.navigation:navigation-compose:${Versions.nav_compose}"
   const val constraint_compose = "androidx.constraintlayout:constraintlayout-compose:${Versions.compose_constraint}"
+  const val compose_activity = "androidx.activity:activity-compose:${Versions.compose_activity}"
   const val navigation_hilt = "androidx.hilt:hilt-navigation:${Versions.hilt_navigation}"
 
   const val room_runtime = "androidx.room:room-runtime:${Versions.room}"
