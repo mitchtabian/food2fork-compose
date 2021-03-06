@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.codingwithmitch.food2forkcompose.presentation.components.*
@@ -40,6 +41,7 @@ private val DarkThemeColors = darkColors(
   onSurface = Color.White,
 )
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun AppTheme(
@@ -47,20 +49,19 @@ fun AppTheme(
   isNetworkAvailable: Boolean,
   displayProgressBar: Boolean,
   scaffoldState: ScaffoldState,
-  messageQueue: Queue<GenericDialogInfo>? = null,
-  onDismiss: () -> Unit,
+  dialogQueue: Queue<GenericDialogInfo>? = null,
   content: @Composable () -> Unit,
 ) {
   MaterialTheme(
     colors = if (darkTheme) DarkThemeColors else LightThemeColors,
     typography = QuickSandTypography,
     shapes = AppShapes
-  ) {
+  ){
     Box(
       modifier = Modifier
         .fillMaxSize()
         .background(color = if (!darkTheme) Grey1 else Color.Black)
-    ) {
+    ){
       Column{
         ConnectivityMonitor(isNetworkAvailable = isNetworkAvailable)
         content()
@@ -73,22 +74,22 @@ fun AppTheme(
         },
         modifier = Modifier.align(Alignment.BottomCenter)
       )
-      ProcessMessageStack(
-        messageQueue = messageQueue,
-        onDismiss = onDismiss,
+      ProcessDialogQueue(
+        dialogQueue = dialogQueue,
       )
     }
   }
 }
 
+
+
 @Composable
-fun ProcessMessageStack(
-  messageQueue: Queue<GenericDialogInfo>?,
-  onDismiss: () -> Unit,
+fun ProcessDialogQueue(
+  dialogQueue: Queue<GenericDialogInfo>?,
 ) {
-  messageQueue?.peek()?.let { dialogInfo ->
+  dialogQueue?.peek()?.let { dialogInfo ->
     GenericDialog(
-      onDismiss = onDismiss,
+      onDismiss = dialogInfo.onDismiss,
       title = dialogInfo.title,
       description = dialogInfo.description,
       positiveAction = dialogInfo.positiveAction,
@@ -96,6 +97,12 @@ fun ProcessMessageStack(
     )
   }
 }
+
+
+
+
+
+
 
 
 

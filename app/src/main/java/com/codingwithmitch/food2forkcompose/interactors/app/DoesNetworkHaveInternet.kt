@@ -1,10 +1,10 @@
 package com.codingwithmitch.food2forkcompose.interactors.app
 
 import android.util.Log
-import com.codingwithmitch.food2forkcompose.presentation.util.TAG
+import com.codingwithmitch.food2forkcompose.util.TAG
 import java.io.IOException
 import java.net.InetSocketAddress
-import java.net.Socket
+import javax.net.SocketFactory
 
 
 /**
@@ -14,10 +14,10 @@ import java.net.Socket
 object DoesNetworkHaveInternet {
 
   // Make sure to execute this on a background thread.
-  fun execute(): Boolean {
+  fun execute(socketFactory: SocketFactory): Boolean {
     return try{
       Log.d(TAG, "PINGING google.")
-      val socket = Socket()
+      val socket = socketFactory.createSocket() ?: throw IOException("Socket is null.")
       socket.connect(InetSocketAddress("8.8.8.8", 53), 1500)
       socket.close()
       Log.d(TAG, "PING success.")

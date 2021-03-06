@@ -1,8 +1,8 @@
 package com.codingwithmitch.food2forkcompose.network.model
 
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
+import com.codingwithmitch.food2forkcompose.domain.util.DomainMapper
 import com.codingwithmitch.food2forkcompose.util.DateUtils
-import com.codingwithmitch.food2forkcompose.util.DomainMapper
 
 
 class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
@@ -45,20 +45,3 @@ class RecipeDtoMapper : DomainMapper<RecipeDto, Recipe> {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -19,7 +19,7 @@ fun DefaultSnackbar(
         snackbar = { data ->
             Snackbar(
                 modifier = Modifier.padding(16.dp),
-                text = {
+                content = {
                     Text(
                         text = data.message,
                         style = MaterialTheme.typography.body2,
@@ -46,3 +46,11 @@ fun DefaultSnackbar(
         modifier = modifier
     )
 }
+
+
+
+
+
+
+
+

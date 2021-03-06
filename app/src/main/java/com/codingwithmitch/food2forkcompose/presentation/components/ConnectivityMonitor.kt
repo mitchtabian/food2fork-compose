@@ -24,15 +24,3 @@ fun ConnectivityMonitor(
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

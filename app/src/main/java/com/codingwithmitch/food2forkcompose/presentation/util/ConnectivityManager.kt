@@ -27,16 +27,3 @@ constructor(
     connectionLiveData.removeObservers(lifecycleOwner)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

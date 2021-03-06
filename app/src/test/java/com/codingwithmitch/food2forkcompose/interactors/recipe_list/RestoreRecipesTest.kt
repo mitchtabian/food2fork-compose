@@ -1,10 +1,10 @@
 package com.codingwithmitch.food2forkcompose.interactors.recipe_list
 
+import com.codingwithmitch.food2fork.network.RecipeService
 import com.codingwithmitch.food2forkcompose.cache.AppDatabaseFake
 import com.codingwithmitch.food2forkcompose.cache.RecipeDaoFake
 import com.codingwithmitch.food2forkcompose.cache.model.RecipeEntityMapper
 import com.codingwithmitch.food2forkcompose.domain.model.Recipe
-import com.codingwithmitch.food2forkcompose.network.RecipeService
 import com.codingwithmitch.food2forkcompose.network.data.MockWebServerResponses
 import com.codingwithmitch.food2forkcompose.network.model.RecipeDtoMapper
 import com.google.gson.GsonBuilder
@@ -82,7 +82,7 @@ class RestoreRecipesTest{
     assert(recipeDao.getAllRecipes(1, 30).isEmpty())
 
     // get recipes from network and insert into cache
-    val searchResult = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY).toList()
+    val searchResult = searchRecipes.execute(DUMMY_TOKEN, 1, DUMMY_QUERY, true).toList()
 
     // confirm the cache is no longer empty
     assert(recipeDao.getAllRecipes(1, 30).isNotEmpty())
@@ -109,18 +109,3 @@ class RestoreRecipesTest{
     mockWebServer.shutdown()
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

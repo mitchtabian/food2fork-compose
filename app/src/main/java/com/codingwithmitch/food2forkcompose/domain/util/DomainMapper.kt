@@ -1,4 +1,4 @@
-package com.codingwithmitch.food2forkcompose.util
+package com.codingwithmitch.food2forkcompose.domain.util
 
 interface DomainMapper <T, DomainModel>{
 

@@ -4,32 +4,32 @@ import com.google.gson.annotations.SerializedName
 
 data class RecipeDto(
 
-    @SerializedName("pk")
-    var pk: Int,
+        @SerializedName("pk")
+        var pk: Int,
 
-    @SerializedName("title")
-    var title: String,
+        @SerializedName("title")
+        var title: String,
 
-    @SerializedName("publisher")
-    var publisher: String,
+        @SerializedName("publisher")
+        var publisher: String,
 
-    @SerializedName("featured_image")
-    var featuredImage: String,
+        @SerializedName("featured_image")
+        var featuredImage: String,
 
-    @SerializedName("rating")
-    var rating: Int,
+        @SerializedName("rating")
+        var rating: Int = 0,
 
-    @SerializedName("source_url")
-    var sourceUrl: String,
+        @SerializedName("source_url")
+        var sourceUrl: String,
 
-    @SerializedName("ingredients")
-    var ingredients: List<String> = emptyList(),
+        @SerializedName("ingredients")
+        var ingredients: List<String> = emptyList(),
 
-    @SerializedName("long_date_added")
-    var longDateAdded: Long,
+        @SerializedName("long_date_added")
+        var longDateAdded: Long,
 
-    @SerializedName("long_date_updated")
-    var longDateUpdated: Long,
+        @SerializedName("long_date_updated")
+        var longDateUpdated: Long,
 )
 
 
