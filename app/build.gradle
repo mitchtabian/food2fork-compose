@@ -14,6 +14,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id "de.mannodermaus.android-junit5"
+    id "kotlinx-serialization"
 }
 
 android {
@@ -61,6 +62,10 @@ android {
 }
 
 dependencies {
+
+    def ktor_version = "1.5.2"
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:$ktor_version") // serializer
 
     implementation AndroidX.core_ktx
     implementation AndroidX.app_compat

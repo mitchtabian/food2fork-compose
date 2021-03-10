@@ -12,6 +12,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import com.codingwithmitch.food2forkcompose.datastore.SettingsDataStore
+import com.codingwithmitch.food2forkcompose.network.model.KotlinxRecipeDto
+import com.codingwithmitch.food2forkcompose.network.model.RecipeDto
 import com.codingwithmitch.food2forkcompose.presentation.navigation.Screen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeDetailScreen
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe.RecipeViewModel
@@ -19,7 +21,16 @@ import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeLi
 import com.codingwithmitch.food2forkcompose.presentation.ui.recipe_list.RecipeListViewModel
 import com.codingwithmitch.food2forkcompose.presentation.util.ConnectivityManager
 import dagger.hilt.android.AndroidEntryPoint
+import io.ktor.client.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -27,11 +38,15 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(){
 
+  private val TAG: String = "AppDebug"
+
   @Inject
   lateinit var connectivityManager: ConnectivityManager
 
   @Inject
   lateinit var settingsDataStore: SettingsDataStore
+
+  lateinit var httpClient: HttpClient
 
   override fun onStart() {
     super.onStart()
@@ -46,6 +61,29 @@ class MainActivity : AppCompatActivity(){
   @ExperimentalComposeUiApi
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+
+
+    CoroutineScope(IO).launch {
+
+      httpClient = HttpClient(){
+        install(JsonFeature){
+          serializer = KotlinxSerializer(kotlinx.serialization.json.Json {
+            ignoreUnknownKeys = true // if the server sends extra fields, ignore them
+          })
+        }
+      }
+      val response = httpClient.get<KotlinxRecipeDto>("https://food2fork.ca/api/recipe/get/?id=1551"){
+        headers {
+          append("Authorization", "Token 9c8b06d329136da358c2d00e76946b0111ce2c48")
+        }
+      }
+      Log.d(TAG, "ktor data: ${response}")
+
+      // The method close signals to stop executing new requests. It wouldn't block and allows all current requests to finish successfully and release resources
+      httpClient.close()
+    }
+
+
     setContent {
       val navController = rememberNavController()
       NavHost(navController = navController, startDestination = Screen.RecipeList.route) {

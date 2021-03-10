@@ -5,15 +5,18 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:${Versions.gradle}"
+        classpath "com.android.tools.build:gradle:7.0.0-alpha09"
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 
         classpath "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
 
         classpath "de.mannodermaus.gradle.plugins:android-junit5:${Versions.junit5}"
+
+        classpath "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlin}"
     }
 
 }
@@ -22,6 +25,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
 }
 

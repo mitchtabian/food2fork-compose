@@ -17,12 +17,16 @@ fun NothingHere(){
     ){
         Column(modifier = Modifier.align(Alignment.Center)){
             Text(
-                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterHorizontally),
                 text = "¯\\_(ツ)_/¯",
                 style = TextStyle(fontSize = 55.sp)
             )
             Text(
-                modifier = Modifier.padding(8.dp).align(Alignment.CenterHorizontally),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterHorizontally),
                 text = "There's nothing here",
                 style = MaterialTheme.typography.h4
             )
