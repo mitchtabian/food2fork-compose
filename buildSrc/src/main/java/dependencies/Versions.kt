@@ -10,7 +10,7 @@ object Versions {
   const val jvmTarget = "1.8"
 
   const val kotlin = "1.4.30"
-  const val gradle = "7.0.0-alpha05"
+  const val gradle = "7.0.0-alpha08"
   const val hilt = "2.31.2-alpha"
   const val junit5 = "1.7.0.0"
   const val kotlin_compiler_extension = "1.0.0-beta01"
@@ -27,11 +27,11 @@ object Versions {
   const val nav_component = "2.3.2"
   const val nav_compose = "1.0.0-alpha08"
   const val hilt_navigation = "1.0.0-alpha03"
-  const val glide = "4.11.0"
   const val retrofit = "2.9.0"
   const val okHttp = "4.9.0"
   const val leak_canary = "2.5"
   const val room =  "2.2.6"
   const val junit_jupiter = "5.7.0"
   const val datastore = "1.0.0-alpha06"
+  const val accompanist_coil = "0.7.0"
 }
