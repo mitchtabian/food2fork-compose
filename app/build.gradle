@@ -1,4 +1,5 @@
 import dependencies.AnnotationProcessing
+import dependencies.Accompanist
 import dependencies.InstrumentationTest
 import dependencies.Jetbrains
 import dependencies.Square
@@ -6,7 +7,6 @@ import dependencies.UnitTest
 import dependencies.Versions
 import dependencies.AndroidX
 import dependencies.Google
-import dependencies.Glide
 
 plugins {
     id 'com.android.application'
@@ -85,7 +85,7 @@ dependencies {
     implementation Google.material
     implementation Google.hilt_android
 
-    implementation Glide.glide
+    implementation Accompanist.coil
 
     implementation Jetbrains.kotlin_stdlib
 
@@ -95,7 +95,6 @@ dependencies {
     implementation Square.leak_canary
 
     kapt AnnotationProcessing.hilt_compiler
-    kapt AnnotationProcessing.glide_compiler
     kapt AnnotationProcessing.room_compiler
 
     // TESTING
