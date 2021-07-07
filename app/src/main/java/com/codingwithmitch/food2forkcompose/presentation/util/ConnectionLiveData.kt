@@ -36,12 +36,30 @@ class ConnectionLiveData(context: Context) : LiveData<Boolean>() {
   }
 
   override fun onActive() {
-    networkCallback = createNetworkCallback()
-    val networkRequest = NetworkRequest.Builder()
-      .addCapability(NET_CAPABILITY_INTERNET)
-      .build()
-    cm.registerNetworkCallback(networkRequest, networkCallback)
-  }
+        networkCallback = createNetworkCallback()
+        val networkRequest = NetworkRequest.Builder()
+            .addCapability(NET_CAPABILITY_INTERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
+
+        val ckInitialNet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            cm.getNetworkCapabilities(cm.activeNetwork)
+                ?.hasCapability(NET_CAPABILITY_INTERNET)==true
+        } else {
+            val net=cm.allNetworks.find {
+                cm.getNetworkCapabilities(it)?.hasCapability(NET_CAPABILITY_INTERNET)==true
+            }
+            cm.getNetworkCapabilities(net)
+                ?.hasCapability(NET_CAPABILITY_INTERNET)==true
+        }
+        if(!ckInitialNet){
+            //initially there is no internet connection.
+            postValue(false)
+        }
+
+        cm.registerNetworkCallback(networkRequest, networkCallback)
+    }
 
   override fun onInactive() {
     cm.unregisterNetworkCallback(networkCallback)
