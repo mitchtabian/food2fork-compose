@@ -119,7 +119,7 @@ constructor(
         // New search. Reset the state
         resetSearchState()
 
-        searchRecipes.execute(token = token, page = page.value, query = query.value, connectivityManager.isNetworkAvailable.value).onEach { dataState ->
+        searchRecipes.execute(token = token, page = page.value, query = query.value,).onEach { dataState ->
             loading.value = dataState.loading
 
             dataState.data?.let { list ->
@@ -139,7 +139,7 @@ constructor(
             Log.d(TAG, "nextPage: triggered: ${page.value}")
 
             if (page.value > 1) {
-                searchRecipes.execute(token = token, page = page.value, query = query.value, connectivityManager.isNetworkAvailable.value).onEach { dataState ->
+                searchRecipes.execute(token = token, page = page.value, query = query.value).onEach { dataState ->
                     loading.value = dataState.loading
 
                     dataState.data?.let { list ->

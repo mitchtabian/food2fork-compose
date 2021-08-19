@@ -22,21 +22,19 @@ class SearchRecipes(
       token: String,
       page: Int,
       query: String,
-      isNetworkAvailable: Boolean,
   ): Flow<DataState<List<Recipe>>> = flow {
     try {
       emit(DataState.loading())
 
       // just to show pagination, api is fast
-      delay(1000)
+//      delay(1000)
 
       // force error for testing
       if (query == "error") {
           throw Exception("Search FAILED!")
       }
 
-      // if there is a network connection
-      if(isNetworkAvailable){
+      try{
         // Convert: NetworkRecipeEntity -> Recipe -> RecipeCacheEntity
         val recipes = getRecipesFromNetwork(
           token = token,
@@ -46,6 +44,9 @@ class SearchRecipes(
 
         // insert into cache
         recipeDao.insertRecipes(entityMapper.toEntityList(recipes))
+      }catch (e: Exception){
+        // There was a network issue
+        e.printStackTrace()
       }
 
       // query the cache
